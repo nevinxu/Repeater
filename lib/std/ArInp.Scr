@@ -1,0 +1,24 @@
+--create ..\lib\std.lib
+..\lib\stm32f10x_wwdg.o
+..\lib\misc.o
+..\lib\stm32f10x_adc.o
+..\lib\stm32f10x_bkp.o
+..\lib\stm32f10x_can.o
+..\lib\stm32f10x_cec.o
+..\lib\stm32f10x_crc.o
+..\lib\stm32f10x_dac.o
+..\lib\stm32f10x_dbgmcu.o
+..\lib\stm32f10x_dma.o
+..\lib\stm32f10x_exti.o
+..\lib\stm32f10x_flash.o
+..\lib\stm32f10x_fsmc.o
+..\lib\stm32f10x_gpio.o
+..\lib\stm32f10x_i2c.o
+..\lib\stm32f10x_iwdg.o
+..\lib\stm32f10x_pwr.o
+..\lib\stm32f10x_rcc.o
+..\lib\stm32f10x_rtc.o
+..\lib\stm32f10x_sdio.o
+..\lib\stm32f10x_spi.o
+..\lib\stm32f10x_tim.o
+..\lib\stm32f10x_usart.o

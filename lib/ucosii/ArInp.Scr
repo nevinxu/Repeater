@@ -1,0 +1,14 @@
+--create ..\ucosii.lib
+..\os_core.o
+..\os_dbg.o
+..\os_flag.o
+..\os_mbox.o
+..\os_mem.o
+..\os_mutex.o
+..\os_q.o
+..\os_sem.o
+..\os_task.o
+..\os_time.o
+..\os_tmr.o
+..\os_cpu_a.o
+..\os_cpu_c.o
