@@ -46,7 +46,7 @@ typedef struct
 
 } tSpiInformation;
 
-tSpiInformation sSpiInformation;
+tSpiInformation sSpiInformation;   //spi 的结构体
 
 // buffer for 5 bytes of SPI HEADER
 unsigned char tSpiReadHeader[] = { READ, 0, 0, 0, 0 };
@@ -71,9 +71,9 @@ void SSIContReadOperation(void);
 // *CCS does not initialize variables - therefore, __no_init is not needed.                             ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 #ifdef __IAR_SYSTEMS_ICC__
-__no_init char spi_buffer[CC3000_RX_BUFFER_SIZE];
+__no_init char wlan_rx_buffer[CC3000_RX_BUFFER_SIZE];
 #else
-char spi_buffer[CC3000_RX_BUFFER_SIZE];
+unsigned char wlan_rx_buffer[CC3000_RX_BUFFER_SIZE];    //最大的缓存
 #endif
 
 #ifdef __IAR_SYSTEMS_ICC__
@@ -138,14 +138,120 @@ void SpiOpen(gcSpiHandleRx pfRxHandler)
     sSpiInformation.SPIRxHandler = pfRxHandler;
     sSpiInformation.usTxPacketLength = 0;
     sSpiInformation.pTxPacket = NULL;
-    sSpiInformation.pRxPacket = (unsigned char *) spi_buffer;
+    sSpiInformation.pRxPacket = (unsigned char *) wlan_rx_buffer;
     sSpiInformation.usRxPacketLength = 0;
-    spi_buffer[CC3000_RX_BUFFER_SIZE - 1] = CC3000_BUFFER_MAGIC_NUMBER;
+    wlan_rx_buffer[CC3000_RX_BUFFER_SIZE - 1] = CC3000_BUFFER_MAGIC_NUMBER;
     wlan_tx_buffer[CC3000_TX_BUFFER_SIZE - 1] = CC3000_BUFFER_MAGIC_NUMBER;
 
     // Enable interrupt on the GPIOA pin of WLAN IRQ
     tSLInformation.WlanInterruptEnable();
 }
+
+
+static void CC3000_DMA_Config(SPI_DMADirection_TypeDef Direction, uint8_t* buffer, uint16_t NumData)
+{
+	
+  DMA_InitTypeDef DMA_InitStructure;
+  /* Initialize the DMA_PeripheralBaseAddr member */
+  DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t )&SPI1->DR; //SPI_DR_BASE; //
+  /* Initialize the DMA_MemoryBaseAddr member */
+  DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)buffer;
+   /* Initialize the DMA_PeripheralInc member */
+  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;  //寄存器地址不加一
+  /* Initialize the DMA_MemoryInc member */
+  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;   //存储器地址自动加一
+  /* Initialize the DMA_PeripheralDataSize member */
+  DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+  /* Initialize the DMA_MemoryDataSize member */
+  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+  /* Initialize the DMA_Mode member */
+  DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+  /* Initialize the DMA_Priority member */
+  DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;
+  /* Initialize the DMA_M2M member */
+  DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
+  
+  /* If using DMA for Reception */
+  if (Direction == SPI_DMA_RX)
+  {
+    /* Initialize the DMA_DIR member */   //dma目标地址
+    DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+    
+    /* Initialize the DMA_BufferSize member */
+    DMA_InitStructure.DMA_BufferSize = NumData;
+    
+//    DMA_DeInit(SPI_DMA_RX_CHANNEL);
+    
+    DMA_Init(SPI_DMA_RX_CHANNEL, &DMA_InitStructure);
+  }
+   /* If using DMA for Transmission */
+  else if (Direction == SPI_DMA_TX)
+  { 
+    /* Initialize the DMA_DIR member */
+    DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;
+    
+    /* Initialize the DMA_BufferSize member */
+    DMA_InitStructure.DMA_BufferSize = NumData;
+    
+//    DMA_DeInit(SPI_DMA_TX_CHANNEL);
+ 
+    DMA_Init(SPI_DMA_TX_CHANNEL, &DMA_InitStructure);
+  }
+}
+
+void SpiCC3000DMAInit(void)
+{
+  NVIC_InitTypeDef NVIC_RxInt_InitStructure; 
+
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+
+  DMA_DeInit(SPI_DMA_RX_CHANNEL);
+  DMA_DeInit(SPI_DMA_TX_CHANNEL);
+
+  /* Configure and enable SPI DMA TX Channel interrupt */
+  NVIC_RxInt_InitStructure.NVIC_IRQChannel = DMA1_Channel3_IRQn;
+  NVIC_RxInt_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+  NVIC_RxInt_InitStructure.NVIC_IRQChannelSubPriority = 0;
+  NVIC_RxInt_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  NVIC_Init(&NVIC_RxInt_InitStructure);
+
+  /* Enable the DMA Channels Interrupts */
+  DMA_ITConfig(SPI_DMA_TX_CHANNEL, DMA_IT_TC, ENABLE);    //传输完成中断打开
+  DMA_ITConfig(SPI_DMA_RX_CHANNEL, DMA_IT_TC, ENABLE);   
+  /* Configure DMA Peripheral but don't send data*/
+  CC3000_DMA_Config(SPI_DMA_RX, (uint8_t*)wlan_rx_buffer,0);  
+  CC3000_DMA_Config(SPI_DMA_TX, (uint8_t*)wlan_tx_buffer,0);
+
+  /* Enable SPI DMA request */
+  SPI_I2S_DMACmd(SPI_BASE,SPI_I2S_DMAReq_Rx, ENABLE);
+  SPI_I2S_DMACmd(SPI_BASE,SPI_I2S_DMAReq_Tx, ENABLE);
+  /* Enable DMA RX Channel */
+  DMA_Cmd(SPI_DMA_RX_CHANNEL, ENABLE);  
+  /* Enable DMA TX Channel */  
+  DMA_Cmd(SPI_DMA_TX_CHANNEL, ENABLE); 
+
+}
+
+
+
+void SpiDMARXReconfig(unsigned char *rx_buffer,unsigned short NumData)
+{
+	DMA_DeInit(SPI_DMA_RX_CHANNEL);
+	DMA_ITConfig(SPI_DMA_RX_CHANNEL, DMA_IT_TC, ENABLE);    //传输完成中断打开 
+	CC3000_DMA_Config(SPI_DMA_RX, (uint8_t*)rx_buffer,NumData); 
+	DMA_Cmd(SPI_DMA_RX_CHANNEL, ENABLE); 
+	
+}
+
+void SpiDMATXReconfig(unsigned char *tx_buffer,unsigned short NumData)
+{
+  DMA_DeInit(SPI_DMA_TX_CHANNEL);
+  DMA_ITConfig(SPI_DMA_TX_CHANNEL, DMA_IT_TC, ENABLE);    //传输完成中断打开 
+  CC3000_DMA_Config(SPI_DMA_TX, (uint8_t*)tx_buffer,NumData);
+  DMA_Cmd(SPI_DMA_TX_CHANNEL, ENABLE); 
+	
+}
+
 
 //*****************************************************************************
 //
@@ -242,6 +348,9 @@ int init_spi(void)
     SPI_Cmd(SPI_BASE, DISABLE);
     SPI_Init(SPI_BASE, &spi);
     SPI_Cmd(SPI_BASE, ENABLE); 
+
+
+		SpiCC3000DMAInit(); 
     
     delay_ms(20);
     return (ESUCCESS);
@@ -400,13 +509,13 @@ long SpiWrite(unsigned char *pUserBuffer, unsigned short usLength)
     pUserBuffer[3] = 0;
     pUserBuffer[4] = 0;
 
-    usLength += (SPI_HEADER_SIZE + ucPad);
+    usLength += (SPI_HEADER_SIZE + ucPad);   //总共的发送字节
 
     // The magic number that resides at the end of the TX/RX buffer (1 byte after
     // the allocated size) for the purpose of detection of the overrun. If the
     // magic number is overwritten - buffer overrun occurred - and we will stuck
     // here forever!
-    if (wlan_tx_buffer[CC3000_TX_BUFFER_SIZE - 1] != CC3000_BUFFER_MAGIC_NUMBER)
+    if (wlan_tx_buffer[CC3000_TX_BUFFER_SIZE - 1] != CC3000_BUFFER_MAGIC_NUMBER)  //超过最大发送字节
     {
         while (1)
             ;
@@ -481,17 +590,26 @@ long SpiWrite(unsigned char *pUserBuffer, unsigned short usLength)
 //*****************************************************************************
 void SpiWriteDataSynchronous(unsigned char *data, unsigned short size)
 {
+#if 1
     while (size)
     {
-        while (!(TXBufferIsEmpty()))
+ //       while (!(TXBufferIsEmpty()))
             ;
-        SPI_I2S_SendData(SPI_BASE, *data);
-        while (!(RXBufferIsNotEmpty()))
+ //       SPI_I2S_SendData(SPI_BASE, *data);
+		SpiDMATXReconfig(data,1);
+ //       while (!(RXBufferIsNotEmpty()))
             ;
-        SPI_I2S_ReceiveData(SPI_BASE);
+ //       SPI_I2S_ReceiveData(SPI_BASE);
+		SpiDMARXReconfig(wlan_rx_buffer,1);
         size--;
         data++;
     }
+#endif
+#if 0
+	SpiDMATXReconfig(data,1);
+//	SpiDMARXReconfig(wlan_rx_buffer,size);
+#endif	
+
 }
 
 //*****************************************************************************
@@ -508,6 +626,7 @@ void SpiWriteDataSynchronous(unsigned char *data, unsigned short size)
 //*****************************************************************************
 void SpiReadDataSynchronous(unsigned char *data, unsigned short size)
 {
+#if 1
     long i = 0;
     unsigned char *data_to_send = tSpiReadHeader;
 
@@ -521,6 +640,13 @@ void SpiReadDataSynchronous(unsigned char *data, unsigned short size)
             ;
         data[i] = SPI_I2S_ReceiveData(SPI_BASE);
     }
+#endif
+//	SpiDMATXReconfig(size);
+
+//	SpiDMARXReconfig(size);
+
+
+
 }
 
 //*****************************************************************************
@@ -725,6 +851,25 @@ void EXTI1_IRQHandler(void)
         }
         EXTI_ClearITPendingBit(IRQ_INT_LINE);
     }
+}
+
+
+void DMA1_Channel3_IRQHandler(void)     //spi 发送dma 中断 
+{
+	if(DMA_GetITStatus(DMA1_IT_TC3)==SET)
+	{
+	  DMA_ClearITPendingBit(DMA1_IT_TC3);
+	}
+
+}
+
+void DMA1_Channel2_IRQHandler(void)     //spi 发送dma 中断 
+{
+	if(DMA_GetITStatus(DMA1_IT_TC2)==SET)
+	{
+	  DMA_ClearITPendingBit(DMA1_IT_TC2);
+	}
+
 }
 
 //*****************************************************************************

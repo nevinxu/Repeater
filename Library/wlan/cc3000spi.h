@@ -89,6 +89,16 @@ typedef void (*gcSpiHandleTx)(void);
 #define SPI_MISO_PIN           GPIO_Pin_6
 #define SPI_MOSI_PIN           GPIO_Pin_7
 
+#define SPI_DMA_RX_CHANNEL              DMA1_Channel2 
+#define SPI_DMA_TX_CHANNEL              DMA1_Channel3
+
+
+typedef enum
+{
+  SPI_DMA_TX = 0,
+  SPI_DMA_RX = 1
+}SPI_DMADirection_TypeDef;
+
 
 extern unsigned char wlan_tx_buffer[];
 
