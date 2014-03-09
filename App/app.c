@@ -1,33 +1,30 @@
 #include 	"includes.h" 
 
 OS_STK GstkStart[100];
-OS_STK WLANTaskStk[100];
+OS_STK WLANSENDTaskStk[100];
+OS_STK WLANRECEIVETaskStk[100];
 OS_STK CC1100TaskStk[100];
 OS_STK TestTaskStk[100];
 OS_STK FlashTaskStk[100];
 OS_STK LCDTaskStk[100];
 
 #define  TASK_START_PRIO           3
-#define  TASK_WLAN_PRIO            9
-#define  TASK_CC1100_PRIO            4
+#define  TASK_WLANSEND_PRIO            13
+#define  TASK_WLANRECEIVE_PRIO            11
+#define  TASK_CC1100_PRIO            12
 #define  TASK_TEST_PRIO            5
 #define  TASK_FLASH_PRIO            6
 #define  TASK_LCD_PRIO            7
 
 static void  taskStart (void  *parg);
-static void  taskwlan (void  *parg);
+static void  taskwlansend (void  *parg);
+static void  taskwlanreceive (void  *parg);
 static void  taskcc1100 (void  *parg);
 static void taskflash(void *pdata);
 static void tasklcd(void *pdata);
 
-
-extern unsigned short Rxlen;
-extern unsigned short WIFIRxLen;
-extern unsigned char WIFIRxBuf[WIFI_RX_BUF_MAX];
-
-extern unsigned short WIFITxLen;
-extern unsigned char WIFITxBuf[WIFI_TX_BUF_MAX];
-
+OS_EVENT *Rate_Semp;
+INT8U err;
 
 unsigned char WiFi_Status;
 
@@ -43,14 +40,18 @@ void taskStart (void  *parg)
 {
     (void)parg;
 
-	    OSTaskCreate ( taskwlan,//
+	    OSTaskCreate ( taskwlansend,//
                    (void *)0, 
-					&WLANTaskStk[99],     //指针地址会出问题的
-                   TASK_WLAN_PRIO);     
-//			OSTaskCreate ( taskcc1100,//
-//                   (void *)0, 
-//                   &CC1100TaskStk[99], 
-//                   TASK_CC1100_PRIO);  
+					&WLANSENDTaskStk[99],     //指针地址会出问题的
+                   TASK_WLANSEND_PRIO);  
+	    OSTaskCreate ( taskwlanreceive,//
+                   (void *)0, 
+					&WLANRECEIVETaskStk[99],     //指针地址会出问题的
+                   TASK_WLANRECEIVE_PRIO);   	
+		OSTaskCreate ( taskcc1100,//
+                   (void *)0, 
+                   &CC1100TaskStk[99], 
+                   TASK_CC1100_PRIO);  
 //			OSTaskCreate ( tasktest,//
 //                   (void *)0, 
 //                   &TestTaskStk[99], 
@@ -69,30 +70,47 @@ void taskStart (void  *parg)
     }
 }
 
-void  taskwlan (void  *parg)
+void  taskwlanreceive (void  *parg)
 {
 	(void)parg;
+	Rate_Semp = OSSemCreate (1); 
+	OSSemPend(Rate_Semp,0,&err);
 	Board_Init();
 	while(1)
 	{
-	Wifi_Function();
+	Wifireceive_Function();
 	OSTimeDly(OS_TICKS_PER_SEC/2);
+    }
+}
+
+void  taskwlansend (void  *parg)
+{
+	(void)parg;
+	while(1)
+	{
+	OSSemPend(Rate_Semp,0,&err);
+	Wifisend_Function();
+	OSSemPost(Rate_Semp);
     }
 }
 
 static void taskcc1100(void *pdata)
 {
 	unsigned char TxBuf[30]={0};
-    pdata = pdata;
-	CC1101Init();                                    //CC1101 初始化
+    pdata = pdata; 
+//	CC1101Init();                                    //CC1101 初始化
 
     while(1)
     {
-			OSTimeDly(OS_TICKS_PER_SEC/2); 
-			SpiCStrobe(CCxxx0_SIDLE);    //进入空闲
-			TxBuf[1]=1 ; 
-			TxBuf[2]=1 ; 
-			SpiCSendPacket(TxBuf,30);
+		OSSemPend(Rate_Semp,0,&err);
+//		OSTimeDly(OS_TICKS_PER_SEC); 
+//		OSTimeDly(OS_TICKS_PER_SEC); 
+		OSTimeDly(OS_TICKS_PER_SEC/10); 				
+		OSSemPost(Rate_Semp);
+//			SpiCStrobe(CCxxx0_SIDLE);    //进入空闲
+//			TxBuf[1]=1 ; 
+//			TxBuf[2]=1 ; 
+//			SpiCSendPacket(TxBuf,30);
     }
 }
 

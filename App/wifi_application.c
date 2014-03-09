@@ -69,11 +69,8 @@ unsigned char WIFITxBuf[WIFI_TX_BUF_MAX];
 
 char DeviceMac_Addr[6];
 
-#ifdef  DEBUG_WU 
-unsigned short RX_Port = 0;
-unsigned long RX_IP = 0;
-char uart_msg_str[100] = {0};
-#endif
+extern OS_EVENT *Rate_Semp;
+extern INT8U err;
 
 
 
@@ -941,6 +938,7 @@ void Wifi_event_handler(void)
     case WIFI_CONNECT_FINISED:
       {
         SetEvent(RECV_EVENT_HANDLER | SEND_EVENT_HANDLER |LED_EVENT_HANDLER);
+		OSSemPost(Rate_Semp);
         ulWifiEvent = WIFI_SEND_RECV;
       }break;
     case WIFI_SMARTCONFIG:
@@ -965,50 +963,33 @@ void Wifi_event_handler(void)
   }
 }
 
-void Wifi_Function()
+void Wifisend_Function()
+{
+	SendRateData(70);
+}
+
+void Wifireceive_Function()
 {
 	static unsigned char Heart_Beat_Flag = 0;
 	Wifi_event_handler();
-    if(SysEvent & RECV_EVENT_HANDLER)
-    {
-	  Heart_Beat_Flag++;
-      ClearEvent(RECV_EVENT_HANDLER);
-      if(Rxlen)
-      {
-        if(WIFIRxBuf[Rxlen-1]== '1')
-        {
-          Heart_Beat_Flag = 0;
-        } 
-        memset (WIFIRxBuf, 0, Rxlen);  
-        Rxlen = 0;
-      }
-		if(Heart_Beat_Flag >= 2)
-		{
-			Heart_Beat_Flag = 0;
-			ReConnectSocket(DEVICE_LAN_IP,DEVICE_LAN_PORT,TCPClient_Mode);				
-		}
-      SetEventTimeOut(RECV_EVENT_HANDLER,50);
-    }
-    if(SysEvent & SEND_EVENT_HANDLER)
-    {
-      ClearEvent(SEND_EVENT_HANDLER);
-	SendRateData(70);
-      SetEventTimeOut(SEND_EVENT_HANDLER,50);
-    }
-    if(SysEvent & LED_EVENT_HANDLER)
-    {
-      ClearEvent(LED_EVENT_HANDLER);
-      if(Relay_Cty_Flag)
-      {
-        Relay_Cty_Flag = 0;
-        SetRELAYToggle();
-      }
-      SetEventTimeOut(LED_EVENT_HANDLER,50);
-    }
-    if(SysEvent & LOCAL_CONTROL_EVENT_HANDLER)
-    {
-      ClearEvent(ALL_EVENT_HANDLER);
-      Relay_Cty_Flag = 1;
-      SetEvent(RECV_EVENT_HANDLER | SEND_EVENT_HANDLER | LED_EVENT_HANDLER);  
-    }
+//    if(SysEvent & RECV_EVENT_HANDLER)
+//    {
+//	  Heart_Beat_Flag++;
+//      ClearEvent(RECV_EVENT_HANDLER);
+//      if(Rxlen)
+//      {
+//        if(WIFIRxBuf[Rxlen-1]== '1')
+//        {
+//          Heart_Beat_Flag = 0;
+//        } 
+//        memset (WIFIRxBuf, 0, Rxlen);  
+//        Rxlen = 0;
+//      }
+//		if(Heart_Beat_Flag >= 2)
+//		{
+//			Heart_Beat_Flag = 0;
+//			ReConnectSocket(DEVICE_LAN_IP,DEVICE_LAN_PORT,TCPClient_Mode);				
+//		}
+//      SetEventTimeOut(RECV_EVENT_HANDLER,50);
+//    }
 }

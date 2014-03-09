@@ -68,7 +68,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\OS-uCOSII\core\ucos_ii.h)(0x529A
 I (E:\工作\My_Project\Repeater\Repeater_Project\App\app_cfg.h)(0x529A0104)
 I (E:\工作\My_Project\Repeater\Repeater_Project\OS-uCOSII\core\os_cfg.h)(0x529A011B)
 I (E:\工作\My_Project\Repeater\Repeater_Project\OS-uCOSII\port\os_cpu.h)(0x529A011C)
-F (..\App\app.c)(0x531C6697)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\app.o --omf_browse .\obj\app.crf --depend .\obj\app.d)
+F (..\App\app.c)(0x531C71B6)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\app.o --omf_browse .\obj\app.crf --depend .\obj\app.d)
 I (E:\工作\My_Project\Repeater\Repeater_Project\App\includes.h)(0x530A7220)
 I (C:\Keil\ARM\ARMCC\include\stdio.h)(0x51C7B744)
 I (C:\Keil\ARM\ARMCC\include\string.h)(0x51C7B744)
@@ -1416,4 +1416,4 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_tim.h)(0x529A0119)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_usart.h)(0x529A0119)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\misc.h)(0x529A0118)
-F (..\readme.txt)(0x5315E6C7)()
+F (..\readme.txt)(0x531C7032)()
