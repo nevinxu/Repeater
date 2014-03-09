@@ -39,6 +39,9 @@ unsigned char TCP_Mode = TCPClient_Mode;
 
 extern unsigned char WiFi_Status;
 
+extern unsigned short Relay_Flag;
+volatile unsigned short Relay_Cty_Flag = 0;
+
 volatile unsigned long ulSmartConfigFinished, ulCC3000Connected, ulCC3000DHCP,OkToDoShutDown, 
                        ulCC3000DHCP_configured;
 volatile unsigned char ucStopSmartConfig;
@@ -90,6 +93,71 @@ __no_init unsigned char pucCC3000_Rx_Buffer[CC3000_APP_BUFFER_SIZE + CC3000_RX_B
 #else
 unsigned char pucCC3000_Rx_Buffer[CC3000_APP_BUFFER_SIZE + CC3000_RX_BUFFER_OVERHEAD_SIZE];
 #endif
+
+
+volatile unsigned long EventTimeOut[EVENT_MAX_COUNT] = {0,0,0,0,0,0,0,0};
+volatile unsigned char SysEvent = 0;
+
+void SetEventTimeOut(unsigned char event,unsigned long  TimeOut)
+{
+  SysEvent &= ~event;
+  if(TimeOut)
+  {
+   switch(event)
+   {
+     case 0x01:EventTimeOut[0] = TimeOut;break;
+     case 0x02:EventTimeOut[1] = TimeOut;break;
+     case 0x04:EventTimeOut[2] = TimeOut;break;
+     case 0x08:EventTimeOut[3] = TimeOut;break;
+     case 0x10:EventTimeOut[4] = TimeOut;break;
+     case 0x20:EventTimeOut[5] = TimeOut;break;
+     case 0x40:EventTimeOut[6] = TimeOut;break;
+     case 0x80:EventTimeOut[7] = TimeOut;break;
+     default:break;
+   }
+  }
+}
+
+void SetEvent(unsigned char  event)
+{
+  unsigned char i;
+  for(i=0;i<EVENT_MAX_COUNT;i++)
+  {
+    if(event&(0x01<<i))
+    {
+      EventTimeOut[i] = 0;
+    }
+  }
+  SysEvent |= event;
+}
+
+void ClearEvent(unsigned char event)
+{
+  unsigned char i;
+  for(i=0;i<EVENT_MAX_COUNT;i++)
+  {
+    if(event&(0x01<<i))
+    {
+      EventTimeOut[i] = 0;
+    }
+  }
+  SysEvent &= ~event;
+}
+
+void GetEvent(void)
+{
+  unsigned char i;
+  for(i=0;i<EVENT_MAX_COUNT;i++)
+  {
+    if(EventTimeOut[i])
+    {
+     if(--EventTimeOut[i]==0)
+     {
+       SysEvent |= 0x01<<i;
+     }
+    }
+  }
+}
 
 
 //*****************************************************************************
@@ -366,24 +434,19 @@ void  ReConnectSocket(unsigned long IP,unsigned short Port,unsigned char Mode)
   tSocketAddr.sa_data[0] = MSB(Port);
   tSocketAddr.sa_data[1] = LSB(Port);
   
-  tSocketAddr.sa_data[2] = IP & 0xff;
-  tSocketAddr.sa_data[3] = (IP & 0xff00) >> 8;
-  tSocketAddr.sa_data[4] = (IP & 0xff0000) >> 16;
-  tSocketAddr.sa_data[5] = IP >> 24;
+	tSocketAddr.sa_data[2] = IP & 0xff;
+	tSocketAddr.sa_data[3] = (IP & 0xff00) >> 8;
+	tSocketAddr.sa_data[4] = (IP & 0xff0000) >> 16;
+	tSocketAddr.sa_data[5] = IP >> 24;
 	if(Mode == TCPClient_Mode)
 		{
 			closesocket(ulSocket);
 			Set_ulSocket(Mode);
 			while(connect(ulSocket, &tSocketAddr, sizeof(sockaddr))== -1)
 			{
-//				closesocket(ulSocket);
+				closesocket(ulSocket);
 				Set_ulSocket(Mode);
-//				ulSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP); 
-//				delay_ms(1000);
 			}
-//			closesocket(ulSocket);
-//			Set_ulSocket(Mode);
-//			while(connect(ulSocket, &tSocketAddr, sizeof(sockaddr))== -1);
 		}
 }
 
@@ -867,7 +930,7 @@ void Wifi_event_handler(void)
       {
         ClearEvent(ALL_EVENT_HANDLER);
 //        ConnectionAP();
-				WiFi_Status &=0xf0;  //清掉原来的
+			WiFi_Status &=0xf0;  //清掉原来的
 				WiFi_Status +=  SCANNING;
 //				Wifi_Scan();
 				WiFi_Status &=0xf0;  //清掉原来的
@@ -900,4 +963,52 @@ void Wifi_event_handler(void)
     Wifi_recv_data();
     return;
   }
+}
+
+void Wifi_Function()
+{
+	static unsigned char Heart_Beat_Flag = 0;
+	Wifi_event_handler();
+    if(SysEvent & RECV_EVENT_HANDLER)
+    {
+	  Heart_Beat_Flag++;
+      ClearEvent(RECV_EVENT_HANDLER);
+      if(Rxlen)
+      {
+        if(WIFIRxBuf[Rxlen-1]== '1')
+        {
+          Heart_Beat_Flag = 0;
+        } 
+        memset (WIFIRxBuf, 0, Rxlen);  
+        Rxlen = 0;
+      }
+		if(Heart_Beat_Flag >= 2)
+		{
+			Heart_Beat_Flag = 0;
+			ReConnectSocket(DEVICE_LAN_IP,DEVICE_LAN_PORT,TCPClient_Mode);				
+		}
+      SetEventTimeOut(RECV_EVENT_HANDLER,50);
+    }
+    if(SysEvent & SEND_EVENT_HANDLER)
+    {
+      ClearEvent(SEND_EVENT_HANDLER);
+	SendRateData(70);
+      SetEventTimeOut(SEND_EVENT_HANDLER,50);
+    }
+    if(SysEvent & LED_EVENT_HANDLER)
+    {
+      ClearEvent(LED_EVENT_HANDLER);
+      if(Relay_Cty_Flag)
+      {
+        Relay_Cty_Flag = 0;
+        SetRELAYToggle();
+      }
+      SetEventTimeOut(LED_EVENT_HANDLER,50);
+    }
+    if(SysEvent & LOCAL_CONTROL_EVENT_HANDLER)
+    {
+      ClearEvent(ALL_EVENT_HANDLER);
+      Relay_Cty_Flag = 1;
+      SetEvent(RECV_EVENT_HANDLER | SEND_EVENT_HANDLER | LED_EVENT_HANDLER);  
+    }
 }

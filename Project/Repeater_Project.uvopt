@@ -282,7 +282,7 @@
 
   <Group>
     <GroupName>APP</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -308,10 +308,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>15</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>102</TopLine>
-      <CurrentLine>119</CurrentLine>
+      <TopLine>27</TopLine>
+      <CurrentLine>36</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\App\app.c</PathWithFileName>
       <FilenameWithoutPath>app.c</FilenameWithoutPath>
@@ -324,10 +324,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>30</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>685</TopLine>
-      <CurrentLine>705</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>441</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\App\wifi_application.c</PathWithFileName>
       <FilenameWithoutPath>wifi_application.c</FilenameWithoutPath>
@@ -391,7 +391,7 @@
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>1761</TopLine>
-      <CurrentLine>1763</CurrentLine>
+      <CurrentLine>1765</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\OS-uCOSII\core\os_core.c</PathWithFileName>
       <FilenameWithoutPath>os_core.c</FilenameWithoutPath>
@@ -583,7 +583,7 @@
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>93</TopLine>
-      <CurrentLine>94</CurrentLine>
+      <CurrentLine>100</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\OS-uCOSII\port\os_cpu_a.asm</PathWithFileName>
       <FilenameWithoutPath>os_cpu_a.asm</FilenameWithoutPath>
@@ -650,7 +650,7 @@
 
   <Group>
     <GroupName>wlan</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -676,10 +676,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>2</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>1</CurrentLine>
+      <TopLine>635</TopLine>
+      <CurrentLine>642</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Library\wlan\cc3000spi.c</PathWithFileName>
       <FilenameWithoutPath>cc3000spi.c</FilenameWithoutPath>
@@ -772,7 +772,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>17</ColumnNumber>
+      <ColumnNumber>19</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>545</TopLine>
       <CurrentLine>552</CurrentLine>
@@ -1188,7 +1188,7 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>35</ColumnNumber>
+      <ColumnNumber>23</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>1</TopLine>
       <CurrentLine>24</CurrentLine>

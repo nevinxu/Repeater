@@ -1,8 +1,5 @@
 #include 	"includes.h" 
 
-
-//我的修改 2014.3.5
-
 OS_STK GstkStart[100];
 OS_STK WLANTaskStk[100];
 OS_STK CC1100TaskStk[100];
@@ -20,7 +17,6 @@ OS_STK LCDTaskStk[100];
 static void  taskStart (void  *parg);
 static void  taskwlan (void  *parg);
 static void  taskcc1100 (void  *parg);
-//static void tasktest(void *pdata);
 static void taskflash(void *pdata);
 static void tasklcd(void *pdata);
 
@@ -32,80 +28,9 @@ extern unsigned char WIFIRxBuf[WIFI_RX_BUF_MAX];
 extern unsigned short WIFITxLen;
 extern unsigned char WIFITxBuf[WIFI_TX_BUF_MAX];
 
-extern unsigned short Relay_Flag;
-
-volatile unsigned short Relay_Cty_Flag = 0;
-
-
-//unsigned short Server_Port;
-//unsigned long Server_IP;
 
 unsigned char WiFi_Status;
 
-
-volatile unsigned long EventTimeOut[EVENT_MAX_COUNT] = {0,0,0,0,0,0,0,0};
-volatile unsigned char SysEvent = 0;
-
-void SetEventTimeOut(unsigned char event,unsigned long  TimeOut)
-{
-  SysEvent &= ~event;
-  if(TimeOut)
-  {
-   switch(event)
-   {
-     case 0x01:EventTimeOut[0] = TimeOut;break;
-     case 0x02:EventTimeOut[1] = TimeOut;break;
-     case 0x04:EventTimeOut[2] = TimeOut;break;
-     case 0x08:EventTimeOut[3] = TimeOut;break;
-     case 0x10:EventTimeOut[4] = TimeOut;break;
-     case 0x20:EventTimeOut[5] = TimeOut;break;
-     case 0x40:EventTimeOut[6] = TimeOut;break;
-     case 0x80:EventTimeOut[7] = TimeOut;break;
-     default:break;
-   }
-  }
-}
-
-void SetEvent(unsigned char  event)
-{
-  unsigned char i;
-  for(i=0;i<EVENT_MAX_COUNT;i++)
-  {
-    if(event&(0x01<<i))
-    {
-      EventTimeOut[i] = 0;
-    }
-  }
-  SysEvent |= event;
-}
-
-void ClearEvent(unsigned char event)
-{
-  unsigned char i;
-  for(i=0;i<EVENT_MAX_COUNT;i++)
-  {
-    if(event&(0x01<<i))
-    {
-      EventTimeOut[i] = 0;
-    }
-  }
-  SysEvent &= ~event;
-}
-
-void GetEvent(void)
-{
-  unsigned char i;
-  for(i=0;i<EVENT_MAX_COUNT;i++)
-  {
-    if(EventTimeOut[i])
-    {
-     if(--EventTimeOut[i]==0)
-     {
-       SysEvent |= 0x01<<i;
-     }
-    }
-  }
-}
 
 int main(void)
 {   
@@ -120,7 +45,7 @@ void taskStart (void  *parg)
 
 	    OSTaskCreate ( taskwlan,//
                    (void *)0, 
-										&WLANTaskStk[99],     //指针地址会出问题的
+					&WLANTaskStk[99],     //指针地址会出问题的
                    TASK_WLAN_PRIO);     
 //			OSTaskCreate ( taskcc1100,//
 //                   (void *)0, 
@@ -138,78 +63,28 @@ void taskStart (void  *parg)
 //                   (void *)0, 
 //                   &LCDTaskStk[99], 
 //                   TASK_LCD_PRIO); 
-
-  
     while (1) {   
-				BSP_Init();			  //系统时钟初始化    modify by  nevinxu 2014.2.8
+		BSP_Init();			  //系统时钟初始化    modify by  nevinxu 2014.2.8
         OSTaskSuspend(OS_PRIO_SELF);  
     }
 }
 
 void  taskwlan (void  *parg)
 {
-	unsigned char Heart_Beat_Flag = 0;
-  (void)parg;
+	(void)parg;
 	Board_Init();
 	while(1)
 	{
-		Wifi_event_handler();
-    if(SysEvent & RECV_EVENT_HANDLER)
-    {
-			Heart_Beat_Flag++;
-      ClearEvent(RECV_EVENT_HANDLER);
-      if(Rxlen)
-      {
-        if(WIFIRxBuf[Rxlen-1]== '1')
-        {
-          Heart_Beat_Flag = 0;
-        } 
-        memset (WIFIRxBuf, 0, Rxlen);  
-        Rxlen = 0;
-      }
-			if(Heart_Beat_Flag >= 5)
-			{
-				Heart_Beat_Flag = 0;
-				ReConnectSocket(DEVICE_LAN_IP,DEVICE_LAN_PORT,TCPClient_Mode);
-				OSTimeDly(OS_TICKS_PER_SEC);
-				
-			}
-      SetEventTimeOut(RECV_EVENT_HANDLER,50);
-      continue;
-    }
-    if(SysEvent & SEND_EVENT_HANDLER)
-    {
-      ClearEvent(SEND_EVENT_HANDLER);
-			SendRateData(70);
-      SetEventTimeOut(SEND_EVENT_HANDLER,50);
-      continue;
-    }
-    if(SysEvent & LED_EVENT_HANDLER)
-    {
-      ClearEvent(LED_EVENT_HANDLER);
-      if(Relay_Cty_Flag)
-      {
-        Relay_Cty_Flag = 0;
-        SetRELAYToggle();
-      }
-      SetEventTimeOut(LED_EVENT_HANDLER,50);
-      continue;
-    }
-    if(SysEvent & LOCAL_CONTROL_EVENT_HANDLER)
-    {
-      ClearEvent(ALL_EVENT_HANDLER);
-      Relay_Cty_Flag = 1;
-      SetEvent(RECV_EVENT_HANDLER | SEND_EVENT_HANDLER | LED_EVENT_HANDLER);  
-    }
-			OSTimeDly(OS_TICKS_PER_SEC);
+	Wifi_Function();
+	OSTimeDly(OS_TICKS_PER_SEC/2);
     }
 }
 
 static void taskcc1100(void *pdata)
 {
-		unsigned char TxBuf[30]={0};
+	unsigned char TxBuf[30]={0};
     pdata = pdata;
-		CC1101Init();                                    //CC1101 初始化
+	CC1101Init();                                    //CC1101 初始化
 
     while(1)
     {
@@ -221,28 +96,6 @@ static void taskcc1100(void *pdata)
     }
 }
 
-//static void tasktest(void *pdata)
-//{
-////    INT8U led_state;
-////		unsigned char ptr[8] = "hello\n";
-//    pdata = pdata;
-////    led_state = 1;
-////    LED_ON();
-////		Com1Init(9600);
-//    while(1)
-//    {
-//       OSTimeDly(OS_TICKS_PER_SEC); 
-////        if(led_state == 0) {
-////            led_state = 1;
-//////					Com1Send(ptr,6);
-////            LED_ON();
-////        } else {
-////            led_state = 0;
-////            LED_OFF();
-////        }
-
-//    }
-//}
 
 static void taskflash(void *pdata)
 {

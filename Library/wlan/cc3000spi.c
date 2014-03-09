@@ -590,19 +590,28 @@ long SpiWrite(unsigned char *pUserBuffer, unsigned short usLength)
 //*****************************************************************************
 void SpiWriteDataSynchronous(unsigned char *data, unsigned short size)
 {
+	unsigned char flag =1;
 #if 1
-    while (size)
+//	SpiDMARXReconfig(wlan_rx_buffer,size);
+	while (size--)
+	{
+//		SpiDMARXReconfig(wlan_rx_buffer,1);
+		SpiDMATXReconfig(data,1);
+		if(flag--)
+		SpiDMARXReconfig(wlan_rx_buffer,size);
+        data++;
+	}
     {
  //       while (!(TXBufferIsEmpty()))
-            ;
+//            ;
  //       SPI_I2S_SendData(SPI_BASE, *data);
-		SpiDMATXReconfig(data,1);
- //       while (!(RXBufferIsNotEmpty()))
-            ;
+//		SpiDMATXReconfig(data,size);
+// //       while (!(RXBufferIsNotEmpty()))
+//            ;
  //       SPI_I2S_ReceiveData(SPI_BASE);
-		SpiDMARXReconfig(wlan_rx_buffer,1);
-        size--;
-        data++;
+//		SpiDMARXReconfig(wlan_rx_buffer,size);
+
+
     }
 #endif
 #if 0
@@ -627,18 +636,22 @@ void SpiWriteDataSynchronous(unsigned char *data, unsigned short size)
 void SpiReadDataSynchronous(unsigned char *data, unsigned short size)
 {
 #if 1
-    long i = 0;
+	unsigned char flag = 1;
     unsigned char *data_to_send = tSpiReadHeader;
 
-    for (i = 0; i < size; i++)
+	while (size--)
     {
-        while (!(TXBufferIsEmpty()))
-            ;
+//        while (!(TXBufferIsEmpty()))
+//            ;
         //Dummy write to trigger the clock
-        SPI_I2S_SendData(SPI_BASE, data_to_send[0]);
-        while (!(RXBufferIsNotEmpty()))
-            ;
-        data[i] = SPI_I2S_ReceiveData(SPI_BASE);
+//        SPI_I2S_SendData(SPI_BASE, data_to_send[0]);
+		SpiDMATXReconfig(data_to_send,1);
+//        while (!(RXBufferIsNotEmpty()))
+//            ;
+//        data[i] = SPI_I2S_ReceiveData(SPI_BASE);
+		if(flag--)
+		SpiDMARXReconfig(data,size+1);
+		data++;
     }
 #endif
 //	SpiDMATXReconfig(size);
