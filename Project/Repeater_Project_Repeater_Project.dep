@@ -34,7 +34,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\misc.h)(0x529A0118)
 F (..\Library\CM3\system_stm32f10x.h)(0x529A0118)()
 F (..\Library\CM3\startup\startup_stm32f10x_md.s)(0x529A0118)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x--list .\list\startup_stm32f10x_md.lst --xref -o .\obj\startup_stm32f10x_md.o --depend .\obj\startup_stm32f10x_md.d)
-F (..\App\stm32f10x_it.c)(0x52F63915)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\stm32f10x_it.o --omf_browse .\obj\stm32f10x_it.crf --depend .\obj\stm32f10x_it.d)
+F (..\App\stm32f10x_it.c)(0x531C3211)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\stm32f10x_it.o --omf_browse .\obj\stm32f10x_it.crf --depend .\obj\stm32f10x_it.d)
 I (E:\工作\My_Project\Repeater\Repeater_Project\App\stm32f10x_it.h)(0x529A0104)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\CM3\stm32f10x.h)(0x529A0118)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\CM3\core_cm3.h)(0x529A0118)
@@ -68,7 +68,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\OS-uCOSII\core\ucos_ii.h)(0x529A
 I (E:\工作\My_Project\Repeater\Repeater_Project\App\app_cfg.h)(0x529A0104)
 I (E:\工作\My_Project\Repeater\Repeater_Project\OS-uCOSII\core\os_cfg.h)(0x529A011B)
 I (E:\工作\My_Project\Repeater\Repeater_Project\OS-uCOSII\port\os_cpu.h)(0x529A011C)
-F (..\App\app.c)(0x531886BF)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\app.o --omf_browse .\obj\app.crf --depend .\obj\app.d)
+F (..\App\app.c)(0x531C6697)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\app.o --omf_browse .\obj\app.crf --depend .\obj\app.d)
 I (E:\工作\My_Project\Repeater\Repeater_Project\App\includes.h)(0x530A7220)
 I (C:\Keil\ARM\ARMCC\include\stdio.h)(0x51C7B744)
 I (C:\Keil\ARM\ARMCC\include\string.h)(0x51C7B744)
@@ -108,7 +108,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_usart.h)(0x529A0119)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_wwdg.h)(0x529A011A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\misc.h)(0x529A0118)
-I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x5315E5C2)
+I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x531C669A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\nvmem.h)(0x51248CC1)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000_common.h)(0x517E5B17)
 I (C:\Keil\ARM\ARMCC\include\errno.h)(0x51C7B744)
@@ -117,7 +117,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\driver\cc1101.h)(0x5300BB2A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\driver\w25x40\spi_flash.h)(0x52FFAE24)
 I (E:\工作\My_Project\Repeater\Repeater_Project\driver\w25x40\spi_flash_ctrl.h)(0x530866FC)
 I (E:\工作\My_Project\Repeater\Repeater_Project\driver\LCD\UC1701X.h)(0x530A7220)
-F (..\App\wifi_application.c)(0x53188465)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\wifi_application.o --omf_browse .\obj\wifi_application.crf --depend .\obj\wifi_application.d)
+F (..\App\wifi_application.c)(0x531C684C)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\wifi_application.o --omf_browse .\obj\wifi_application.crf --depend .\obj\wifi_application.d)
 I (E:\工作\My_Project\Repeater\Repeater_Project\App\includes.h)(0x530A7220)
 I (C:\Keil\ARM\ARMCC\include\stdio.h)(0x51C7B744)
 I (C:\Keil\ARM\ARMCC\include\string.h)(0x51C7B744)
@@ -157,7 +157,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_usart.h)(0x529A0119)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_wwdg.h)(0x529A011A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\misc.h)(0x529A0118)
-I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x5315E5C2)
+I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x531C669A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\nvmem.h)(0x51248CC1)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000_common.h)(0x517E5B17)
 I (C:\Keil\ARM\ARMCC\include\errno.h)(0x51C7B744)
@@ -171,7 +171,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\evnt_handler.h)(0x5
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\hci.h)(0x5148661C)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\socket.h)(0x530989A2)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\netapp.h)(0x53098E78)
-I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000spi.h)(0x5300B760)
+I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000spi.h)(0x531C11A2)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\security.h)(0x51909C3A)
 F (..\App\DataProcess.c)(0x5309E98F)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\dataprocess.o --omf_browse .\obj\dataprocess.crf --depend .\obj\dataprocess.d)
 I (E:\工作\My_Project\Repeater\Repeater_Project\App\includes.h)(0x530A7220)
@@ -213,7 +213,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_usart.h)(0x529A0119)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_wwdg.h)(0x529A011A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\misc.h)(0x529A0118)
-I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x5315E5C2)
+I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x531C669A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\nvmem.h)(0x51248CC1)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000_common.h)(0x517E5B17)
 I (C:\Keil\ARM\ARMCC\include\errno.h)(0x51C7B744)
@@ -222,7 +222,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\driver\cc1101.h)(0x5300BB2A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\driver\w25x40\spi_flash.h)(0x52FFAE24)
 I (E:\工作\My_Project\Repeater\Repeater_Project\driver\w25x40\spi_flash_ctrl.h)(0x530866FC)
 I (E:\工作\My_Project\Repeater\Repeater_Project\driver\LCD\UC1701X.h)(0x530A7220)
-F (..\Bsp\bsp.c)(0x530867D9)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\bsp.o --omf_browse .\obj\bsp.crf --depend .\obj\bsp.d)
+F (..\Bsp\bsp.c)(0x531C2ECE)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\bsp.o --omf_browse .\obj\bsp.crf --depend .\obj\bsp.d)
 I (E:\工作\My_Project\Repeater\Repeater_Project\App\includes.h)(0x530A7220)
 I (C:\Keil\ARM\ARMCC\include\stdio.h)(0x51C7B744)
 I (C:\Keil\ARM\ARMCC\include\string.h)(0x51C7B744)
@@ -262,7 +262,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_usart.h)(0x529A0119)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_wwdg.h)(0x529A011A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\misc.h)(0x529A0118)
-I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x5315E5C2)
+I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x531C669A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\nvmem.h)(0x51248CC1)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000_common.h)(0x517E5B17)
 I (C:\Keil\ARM\ARMCC\include\errno.h)(0x51C7B744)
@@ -369,7 +369,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_usart.h)(0x529A0119)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_wwdg.h)(0x529A011A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\misc.h)(0x529A0118)
-I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x5315E5C2)
+I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x531C669A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\nvmem.h)(0x51248CC1)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000_common.h)(0x517E5B17)
 I (C:\Keil\ARM\ARMCC\include\errno.h)(0x51C7B744)
@@ -419,7 +419,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_usart.h)(0x529A0119)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_wwdg.h)(0x529A011A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\misc.h)(0x529A0118)
-I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x5315E5C2)
+I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x531C669A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\nvmem.h)(0x51248CC1)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000_common.h)(0x517E5B17)
 I (C:\Keil\ARM\ARMCC\include\errno.h)(0x51C7B744)
@@ -468,7 +468,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_usart.h)(0x529A0119)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_wwdg.h)(0x529A011A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\misc.h)(0x529A0118)
-I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x5315E5C2)
+I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x531C669A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\nvmem.h)(0x51248CC1)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000_common.h)(0x517E5B17)
 I (C:\Keil\ARM\ARMCC\include\errno.h)(0x51C7B744)
@@ -517,7 +517,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_usart.h)(0x529A0119)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_wwdg.h)(0x529A011A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\misc.h)(0x529A0118)
-I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x5315E5C2)
+I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x531C669A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\nvmem.h)(0x51248CC1)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000_common.h)(0x517E5B17)
 I (C:\Keil\ARM\ARMCC\include\errno.h)(0x51C7B744)
@@ -536,7 +536,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\socket.h)(0x530989A
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\wlan.h)(0x51A3119B)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\evnt_handler.h)(0x51248CC1)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\hci.h)(0x5148661C)
-F (..\Library\wlan\cc3000spi.c)(0x53189454)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\cc3000spi.o --omf_browse .\obj\cc3000spi.crf --depend .\obj\cc3000spi.d)
+F (..\Library\wlan\cc3000spi.c)(0x531C6F45)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\cc3000spi.o --omf_browse .\obj\cc3000spi.crf --depend .\obj\cc3000spi.d)
 I (E:\工作\My_Project\Repeater\Repeater_Project\App\includes.h)(0x530A7220)
 I (C:\Keil\ARM\ARMCC\include\stdio.h)(0x51C7B744)
 I (C:\Keil\ARM\ARMCC\include\string.h)(0x51C7B744)
@@ -576,7 +576,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_usart.h)(0x529A0119)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_wwdg.h)(0x529A011A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\misc.h)(0x529A0118)
-I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x5315E5C2)
+I (E:\工作\My_Project\Repeater\Repeater_Project\App\wifi_application.h)(0x531C669A)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\nvmem.h)(0x51248CC1)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000_common.h)(0x517E5B17)
 I (C:\Keil\ARM\ARMCC\include\errno.h)(0x51C7B744)
@@ -586,7 +586,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\driver\w25x40\spi_flash.h)(0x52F
 I (E:\工作\My_Project\Repeater\Repeater_Project\driver\w25x40\spi_flash_ctrl.h)(0x530866FC)
 I (E:\工作\My_Project\Repeater\Repeater_Project\driver\LCD\UC1701X.h)(0x530A7220)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\hci.h)(0x5148661C)
-I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000spi.h)(0x5300B760)
+I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000spi.h)(0x531C11A2)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\evnt_handler.h)(0x51248CC1)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\socket.h)(0x530989A2)
 F (..\Library\wlan\evnt_handler.c)(0x5295FE3E)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\evnt_handler.o --omf_browse .\obj\evnt_handler.crf --depend .\obj\evnt_handler.d)
@@ -600,7 +600,7 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\evnt_handler.h)(0x5
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\socket.h)(0x530989A2)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\wlan.h)(0x51A3119B)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\netapp.h)(0x53098E78)
-I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000spi.h)(0x5300B760)
+I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000spi.h)(0x531C11A2)
 I (C:\Keil\ARM\ARMCC\include\stdio.h)(0x51C7B744)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\CM3\stm32f10x.h)(0x529A0118)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\CM3\core_cm3.h)(0x529A0118)
@@ -635,7 +635,7 @@ I (C:\Keil\ARM\ARMCC\include\stdlib.h)(0x51C7B744)
 I (C:\Keil\ARM\ARMCC\include\errno.h)(0x51C7B744)
 I (C:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7B744)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\hci.h)(0x5148661C)
-I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000spi.h)(0x5300B760)
+I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000spi.h)(0x531C11A2)
 I (C:\Keil\ARM\ARMCC\include\string.h)(0x51C7B744)
 I (C:\Keil\ARM\ARMCC\include\stdio.h)(0x51C7B744)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\CM3\stm32f10x.h)(0x529A0118)
@@ -716,7 +716,7 @@ I (C:\Keil\ARM\ARMCC\include\stdlib.h)(0x51C7B744)
 I (C:\Keil\ARM\ARMCC\include\errno.h)(0x51C7B744)
 I (C:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7B744)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\hci.h)(0x5148661C)
-I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000spi.h)(0x5300B760)
+I (E:\工作\My_Project\Repeater\Repeater_Project\Library\wlan\cc3000spi.h)(0x531C11A2)
 I (C:\Keil\ARM\ARMCC\include\stdio.h)(0x51C7B744)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\CM3\stm32f10x.h)(0x529A0118)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\CM3\core_cm3.h)(0x529A0118)
@@ -1416,4 +1416,4 @@ I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_tim.h)(0x529A0119)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\stm32f10x_usart.h)(0x529A0119)
 I (E:\工作\My_Project\Repeater\Repeater_Project\Library\STM32_Lib\inc\misc.h)(0x529A0118)
-F (.\readme.txt)(0x5315E6C7)()
+F (..\readme.txt)(0x5315E6C7)()

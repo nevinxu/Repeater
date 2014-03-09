@@ -676,7 +676,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>2</ColumnNumber>
+      <ColumnNumber>18</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>635</TopLine>
       <CurrentLine>642</CurrentLine>
@@ -695,7 +695,7 @@
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>238</TopLine>
-      <CurrentLine>241</CurrentLine>
+      <CurrentLine>239</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Library\wlan\evnt_handler.c</PathWithFileName>
       <FilenameWithoutPath>evnt_handler.c</FilenameWithoutPath>
@@ -1188,12 +1188,12 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>23</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>24</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\readme.txt</PathWithFileName>
+      <PathWithFileName>..\readme.txt</PathWithFileName>
       <FilenameWithoutPath>readme.txt</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
