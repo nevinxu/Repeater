@@ -60,10 +60,10 @@ void taskStart (void  *parg)
 //                   (void *)0, 
 //                   &FlashTaskStk[99], 
 //                   TASK_FLASH_PRIO); 
-//			OSTaskCreate ( tasklcd,//
-//                   (void *)0, 
-//                   &LCDTaskStk[99], 
-//                   TASK_LCD_PRIO); 
+			OSTaskCreate ( tasklcd,//
+                   (void *)0, 
+                   &LCDTaskStk[99], 
+                   TASK_LCD_PRIO); 
     while (1) {   
 		BSP_Init();			  //系统时钟初始化    modify by  nevinxu 2014.2.8
         OSTaskSuspend(OS_PRIO_SELF);  
@@ -103,8 +103,6 @@ static void taskcc1100(void *pdata)
     while(1)
     {
 		OSSemPend(Rate_Semp,0,&err);
-//		OSTimeDly(OS_TICKS_PER_SEC); 
-//		OSTimeDly(OS_TICKS_PER_SEC); 
 		OSTimeDly(OS_TICKS_PER_SEC/10); 				
 		OSSemPost(Rate_Semp);
 //			SpiCStrobe(CCxxx0_SIDLE);    //进入空闲
