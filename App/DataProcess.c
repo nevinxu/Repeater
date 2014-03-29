@@ -148,18 +148,18 @@ void CC1101DateRecProcess(void)
 			TotalDrip = CC1101RxBuf[TotalDripByte]+ (CC1101RxBuf[TotalDripByte+1]<<8);
 			TerminalPowerPrecent = CC1101RxBuf[TerminalPowerByte];			
 			WorkingStateMsgAckTransmit(CC1101Target);
-		//	WorkingStateMsgTransmit(CC3000Target);
+			WorkingStateMsgTransmit(CC3000Target);
 		}
 	}
-//	else if(CC1101RxBuf[CommandIdByte] == TerminalLoginCommand)  //登陆状态接收包
-//	{
-//		if(CC1101RxBuf[StatusByte] == 0)  //数据正常
-//		{
-//			LoginStatus = CC1101RxBuf[StatusByte];
-//			ProtocolVersion = CC1101RxBuf[ProtocolVersionByte] + (CC1101RxBuf[ProtocolVersionByte+1]<<8);
-//			HardwareVersion = CC1101RxBuf[HardwareVersionByte] + (CC1101RxBuf[HardwareVersionByte+1]<<8);
-//			LoginAckTransmit(CC1101Target);
-//			LoginTransmit(CC3000Target);
-//		}
-//	}
+	else if(CC1101RxBuf[CommandIdByte] == TerminalLoginCommand)  //登陆状态接收包
+	{
+		if(CC1101RxBuf[StatusByte] == 0)  //数据正常
+		{
+			LoginStatus = CC1101RxBuf[StatusByte];
+			ProtocolVersion = CC1101RxBuf[ProtocolVersionByte] + (CC1101RxBuf[ProtocolVersionByte+1]<<8);
+			HardwareVersion = CC1101RxBuf[HardwareVersionByte] + (CC1101RxBuf[HardwareVersionByte+1]<<8);
+			LoginAckTransmit(CC1101Target);
+			LoginTransmit(CC3000Target);
+		}
+	}
 }
