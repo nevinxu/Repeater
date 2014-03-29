@@ -77,9 +77,9 @@ extern void StartSmartConfig(void);
 extern unsigned char ConnectionAP(void);
 extern void  ReConnectSocket(unsigned long IP,unsigned short Port,unsigned char Mode);
 extern void Init_Client(unsigned long* Socket,char * hname, int port);
-extern void  Wifi_Scan();
-extern void Wifisend_Function();
-extern void Wifireceive_Function();
+extern void  Wifi_Scan(void);
+extern void Wifisend_Function(void);
+extern void Wifireceive_Function(void);
    
 #ifdef __cplusplus
 }

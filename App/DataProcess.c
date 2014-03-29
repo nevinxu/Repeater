@@ -4,63 +4,86 @@ extern unsigned long Deviceipaddr;   //自己ip
 extern unsigned long Connectedipaddr;   //对方ip
 extern unsigned short Server_Port;
 
-void SendCommand(unsigned int Command, unsigned char *Data,unsigned int Datalength)
+
+unsigned char TxBuffer[64];
+unsigned int MsgBegin = 0xA5B4;   //消息识别符
+unsigned int MsgLength;  //消息长度
+unsigned char CommandId; //命令或相应类型
+unsigned int ModelAddress = 0x0001;  //床位号
+long Sequence_Id = 0;   //消息流水号
+unsigned char MsgStatus;  //消息状态
+unsigned char Terminal_ID[6] = {0x00,0x00,0x00,0x00,0x00,0x01};//唯一标识该终端
+
+#define MessageHeaderLength  18
+
+#define ProtocolVersion         0x0001
+#define HardwareVersion         0x0001
+#define Reversed                0x00
+
+unsigned char CurrentSpeed =0;
+unsigned int TotalDrip =0;
+unsigned char TerminalPowerPrecent =0;
+unsigned char WorkingStatus = 0 ;    //工作状态
+
+
+unsigned char CC1101RxBuf[64];  //cc1101数据接收缓存
+unsigned char CC3000RxBuf[64];  //cc3000数据接收缓存
+unsigned char TxBuffer[64];
+unsigned char  CC1101DataRecFlag; //cc1101  数据接收更新标志
+
+
+void MessageHeader()
 {
-  unsigned char  SendBuffer[200];
-  unsigned long sum = 0;
-  unsigned int Length;
-  unsigned int i;
-  static unsigned int SEQ = 0;  //SEQ字段数据长度固定为1 WORD，默认初始值从0x0000开始，每次成功发次一个包后加1。
-  SendBuffer[0] = SOI;
-  SEQ++;
-  SendBuffer[3] = SEQ>>8;
-  SendBuffer[4] = SEQ;
-  sum += ((SEQ>>8) + (SEQ&0x00ff));
-  SendBuffer[5] = Command>>8;
-  SendBuffer[6] =  Command;
-  sum += ( (Command>>8) + (Command&0x00ff));
-  for(i = 0; i< Datalength; i++)
-  {
-    SendBuffer[7+i] = Data[i];
-    sum += Data[i];
-  }
-  Length = 12 + i;
-  sum += ((Length>>8)+ (Length&0x00ff));
-  SendBuffer[1] = Length>>8;
-  SendBuffer[2] = Length;
-  SendBuffer[7+i] = sum>>24;
-  SendBuffer[8+i] = sum>>16;
-  SendBuffer[9+i] = sum>>8;
-  SendBuffer[10+i] = sum;
-  SendBuffer[11+i] = EOI;
-  Wifi_send_data(Server_Port,Connectedipaddr,SendBuffer,Length);
+  TxBuffer[0] = MsgBegin;
+  TxBuffer[1] = MsgBegin>>8;
+  TxBuffer[2] = MsgLength;
+  TxBuffer[3] = MsgLength>>8;
+  TxBuffer[4] = CommandId;
+  TxBuffer[5] = ModelAddress;
+  TxBuffer[6] = ModelAddress>>8;
+  TxBuffer[7] = Sequence_Id;
+  TxBuffer[8] = Sequence_Id>>8;
+  TxBuffer[9] = Sequence_Id>>16;
+  TxBuffer[10] = Sequence_Id>>24;       
+  TxBuffer[11] = MsgStatus;      
+  TxBuffer[12] = Terminal_ID[0];      
+  TxBuffer[13] = Terminal_ID[1];        
+  TxBuffer[14] = Terminal_ID[2];        
+  TxBuffer[15] = Terminal_ID[3]; 
+  TxBuffer[16] = Terminal_ID[4];        
+  TxBuffer[17] = Terminal_ID[5];       
 }
 
-void SendProtocolVersion(unsigned char Version_num)
+void WorkingStateMsgAckTransmit(unsigned char RecTarget)
 {
-  unsigned char Data[1];
-  Data[0] = Version_num;
-  SendCommand(0x0011,Data,1);
+  MsgStatus = WorkingStatus;
+  MsgLength = MessageHeaderLength;
+  Sequence_Id++;
+  CommandId = TerminalWorkingStateAckCommand;
+  MessageHeader();
+   
+	
+	if(RecTarget == CC1101Target)
+	{
+		CC1101SendPacket( TxBuffer, MsgLength); 
+	}
+	else if(RecTarget == CC3000Target)
+	{
+		;
+	}
 }
 
-void SendSoftHardWareVersion(unsigned long HardWare,unsigned long SoftWare)
+void CC1101DateRecProcess(void)
 {
-  unsigned char Data[7];
-  Data[0] = HardWare;
-  Data[1] = HardWare>>8;
-  Data[2] = HardWare>>16;
-  Data[3] = 0;
-  Data[4] = HardWare;
-  Data[5] = HardWare>>8;
-  Data[6] = HardWare>>16;
-  SendCommand(0x0013,Data,7);
-}
-
-void SendRateData(unsigned int RateData)
-{
-  unsigned char Data[2];
-  Data[0] = RateData>>8;
-  Data[1] = RateData;
-
-  SendCommand(0x0054,Data,2);
+	if(CC1101RxBuf[CommandIdByte] == TerminalWorkingStateCommand)
+	{
+		if(CC1101RxBuf[StatusByte] == 0)
+		{
+			WorkingStatus = CC1101RxBuf[StatusByte];
+			CurrentSpeed = CC1101RxBuf[CurrentSpeedByte];
+			TotalDrip = CC1101RxBuf[TotalDripByte]+ (CC1101RxBuf[TotalDripByte+1]<<8);
+			TerminalPowerPrecent = CC1101RxBuf[TerminalPowerByte];			
+			WorkingStateMsgAckTransmit(CC1101Target);
+		}
+	}
 }

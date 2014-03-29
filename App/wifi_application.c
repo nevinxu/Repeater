@@ -69,7 +69,7 @@ unsigned char WIFITxBuf[WIFI_TX_BUF_MAX];
 
 char DeviceMac_Addr[6];
 
-extern OS_EVENT *Rate_Semp;
+//extern OS_EVENT *Rate_Semp;
 extern INT8U err;
 
 
@@ -413,10 +413,8 @@ unsigned char Set_TCP(unsigned long IP,unsigned short Port,unsigned char Mode)
 	//		return -1;
 		}
 	}
-//	RX_IP = 1;
 	return 0;
 }
-
 
 void  ReConnectSocket(unsigned long IP,unsigned short Port,unsigned char Mode)
 {
@@ -529,7 +527,6 @@ ipaddr_aton(const char *cp, ip_addr *addr)
     return (1);
 }
 
-
 char initClient(unsigned long* Socket,sockaddr* tSocketAddr, char * hname, int port)
 {
     ip_addr ipaddr;
@@ -570,7 +567,6 @@ static void Resetcc3000(void)
   // Mask out all non-required events
   wlan_set_event_mask(HCI_EVNT_WLAN_KEEPALIVE|HCI_EVNT_WLAN_UNSOL_INIT|HCI_EVNT_WLAN_ASYNC_PING_REPORT);
 }
-
 
 //*****************************************************************************
 //
@@ -673,7 +669,7 @@ void StartSmartConfig(void)
 
 unsigned char ConnectionAP(void)
 { 
-    unsigned char ConnectedTimeout = 50;
+	unsigned char ConnectedTimeout = 50;
 
   if(ulWifiEvent == WIFI_CONNECTING)
   {   
@@ -721,7 +717,6 @@ int TCPClient()
 	{
 		WiFi_Status &=0xf0;  //清掉原来的
 		WiFi_Status +=  RECONNECTED;
-//		Init_CC3000Driver();
 		Resetcc3000();
 		delay_ms(1000);
 		ulWifiEvent = WIFI_CONNECTING;
@@ -742,7 +737,7 @@ int ConnectUsingSSID(char * ssidName,unsigned char *ssidSecurity)
     wlan_disconnect();
     delay_ms(100); 
     wlan_connect(WLAN_SEC_WPA2, ssidName, strlen(ssidName), 
-                 NULL, ssidSecurity,strlen(ssidSecurity));   
+                 NULL, ssidSecurity,strlen((char*)ssidSecurity));   
 		while(!ulCC3000Connected)
 		{
 			delay_ms(5); 
@@ -938,7 +933,7 @@ void Wifi_event_handler(void)
     case WIFI_CONNECT_FINISED:
       {
         SetEvent(RECV_EVENT_HANDLER | SEND_EVENT_HANDLER |LED_EVENT_HANDLER);
-		OSSemPost(Rate_Semp);
+//		OSSemPost(Rate_Semp);
         ulWifiEvent = WIFI_SEND_RECV;
       }break;
     case WIFI_SMARTCONFIG:
@@ -965,7 +960,7 @@ void Wifi_event_handler(void)
 
 void Wifisend_Function()
 {
-	SendRateData(70);
+	//SendRateData(70);
 }
 
 void Wifireceive_Function()

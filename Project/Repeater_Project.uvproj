@@ -447,6 +447,11 @@
               <FileType>1</FileType>
               <FilePath>..\App\DataProcess.c</FilePath>
             </File>
+            <File>
+              <FileName>LcdDisplay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\LcdDisplay.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

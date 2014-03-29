@@ -2,6 +2,9 @@
 #include "cc1101.h"
  
 u8 PaTabel[8] = {0xC0 ,0xc0 ,0xc0 ,0xc0 ,0xc0 ,0xc0 ,0xc0 ,0xC0};	 // 10dB
+extern unsigned char  CC1101DataRecFlag;
+
+extern unsigned char CC1101RxBuf[64];
 // RF_SETTINGS is a data structure which contains all relevant CCxxx0 registers
 
 typedef struct S_RF_SETTINGS
@@ -77,7 +80,7 @@ const RF_SETTINGS rfSettings =
     0x31,   // TEST1     Various test settings.
     0x09,   // TEST0     Various test settings.
     0x01,   // IOCFG2    GDO2 output pin configuration.
-    0x06,   // IOCFG0   GDO0 output pin configuration. Refer to SmartRF?Studio User Manual for detailed pseudo register explanation.
+    0x02,   // IOCFG0   GDO0 output pin configuration. Refer to SmartRF?Studio User Manual for detailed pseudo register explanation.
 
     0x04,   // PKTCTRL1  Packet automation control.
     0x05,   // PKTCTRL0  Packet automation control.
@@ -292,18 +295,23 @@ void WriteRfSetting(void)
     SPiCWriteReg(CCxxx0_PKTLEN,   rfSettings.PKTLEN);
 }
 //发送一组数组
-void SpiCSendPacket(u8 *TxBuffer,u8 Size)
+void CC1101SendPacket(u8 *TxBuffer,u8 Size)
 {
 	u16 i = 0;
+	SpiCStrobe(CCxxx0_SIDLE);//进入空闲  这个一定要加  
+  Delay(1000);
 	SpiCStrobe(CCxxx0_SFTX);// Flush the TX FIFO buffer.
+	Delay(1000);
 	SPiCWriteReg(CCxxx0_TXFIFO,Size);//写大小
 	SpiCWriteBurstReg(CCxxx0_TXFIFO,TxBuffer,Size);//写入要写的数据
+	Delay(60000);
 	SpiCStrobe(CCxxx0_STX);//In IDLE state: Enable TX.
+	Delay(100);
 	while(!GPIO_ReadInputDataBit(GDO0_GPIO,GDO0))	 //while(!GDO0)
 	{
-		if(i>100)  	//限时等待
-		break;
-		Delay(100);
+//		if(i>100)  	//限时等待
+//		break;
+		Delay(30000);
 		i++;		
 	} 
 	while(GPIO_ReadInputDataBit(GDO0_GPIO,GDO0))	 //while(GDO0)
@@ -313,44 +321,48 @@ void SpiCSendPacket(u8 *TxBuffer,u8 Size)
 		Delay(100);
 		i++;	
 	}
-	SpiCStrobe(CCxxx0_SFTX);// 清除缓冲区
+	Delay(30000);
 	SpiCStrobe(CCxxx0_SIDLE);//进入空闲
-//	SpiCStrobe(CCxxx0_SRX);//进入接收状态
+//	SpiCStrobe(CCxxx0_SFTX);// 清除缓冲区
+//	SpiCStrobe(CCxxx0_SFRX);// 清除缓冲区
+	SpiCStrobe(CCxxx0_SRX);//进入接收状态
 
 }
 
-//接收数据 
-u8 SpiCReceivePacket(u8 *RxBuffer)
+void ClearRecBuf()
 {
-	u8 Status[2];
-	u8 PacketLength;
+	unsigned char i;
+	for(i=0;i<64;i++)
+	{
+		CC1101RxBuf[i] = 0;
+	}
+}
 
+//接收数据 
+u8 CC1101ReceivePacket(u8 *RxBuffer)
+{
+//	u8 Status[2];
+	u8 PacketLength;
+	ClearRecBuf();
 	SpiCStrobe(CCxxx0_SRX);//进入接收状态
 	if((SpiCReadStatus(CCxxx0_RXBYTES)&BYTES_IN_RXFIFO))//如果接受的字节数不为0
 	{
-		PacketLength=SpiCReadReg(CCxxx0_RXFIFO);//读出第一个字节数
-//		if(PacketLength<=*Size)
-//		{
-			SpiCReadBurstReg(CCxxx0_RXFIFO,RxBuffer,PacketLength);//接收数据
-		//	*Size=PacketLength;//修改数据长度
-			//read CRC data
-			SpiCReadBurstReg(CCxxx0_RXFIFO,Status,2);//接收数据
-			SpiCStrobe(CCxxx0_SFRX);//clear Buffer 清除缓存
-			Delay(100);
-//			SpiCStrobe(CCxxx0_SIDLE);//进入空闲
-			return(Status[1]&CRC_OK);//if right return 1 如果正确返回1
-//		}
-//		else
-//		{
-//			*Size=PacketLength;//修改数据长度
-//			SpiCStrobe(CCxxx0_SFRX);//clear Buffer 清除缓存	
-//			return 0;
-//		}
-	}
-	else
-	{
-		SpiCStrobe(CCxxx0_SFRX);//clear Buffer 清除缓存	
-		return 0;
+		SpiCReadBurstReg(CCxxx0_RXFIFO,RxBuffer,4);//接收数据
+		if((RxBuffer[0] == 0xb4) && (RxBuffer[1] == 0xa5))
+		{
+			PacketLength = RxBuffer[2] - 4;   //协议规定为16字节长度  不改了
+			SpiCReadBurstReg(CCxxx0_RXFIFO,RxBuffer+4,PacketLength);//接收数据
+		}
+		else
+		{
+			SpiCStrobe(CCxxx0_SFRX);//clear Buffer 清除缓存	
+			SpiCStrobe(CCxxx0_SRX);//进入接收状态
+			return 0;
+		}
+		SpiCStrobe(CCxxx0_SFRX);//clear Buffer 清除缓存
+		SpiCStrobe(CCxxx0_SRX);//进入接收状态
+		Delay(100);
+		return 1;
 	}
 }
 
@@ -436,25 +448,24 @@ void CC1100_GPIO_Configuration()
 //初始化
 void CC1101Init(void)
 {	
-	unsigned char  fifithr;
 	CC1100_GPIO_Configuration();
 	SPiCPowerUpReset();
 	WriteRfSetting();
 	SpiCWriteBurstReg(CCxxx0_PATABLE,PaTabel,1);//功率配置
-	SPiCWriteReg(CCxxx0_FIFOTHR,64);
-	fifithr = SpiCReadReg(CCxxx0_FIFOTHR);
-	fifithr++;
-//	SpiCReadBurstReg(CCxxx0_PATABLE,PaTabel,8);	
+	SPiCWriteReg(CCxxx0_FIFOTHR,0x0e);
 	Delay(1000);	
+	
+	SpiCStrobe(CCxxx0_SIDLE);//进入空闲
+	SpiCStrobe(CCxxx0_SFRX);// 清除缓冲区
+	SpiCStrobe(CCxxx0_SRX);//进入接收状态
 }
 
 void EXTI9_5_IRQHandler(void)
 {
-	   unsigned char RxBuf[100]={0};
-    if (EXTI_GetITStatus(EXTI_Line_GPO2) != RESET)
-   {
-      EXTI_ClearITPendingBit(EXTI_Line_GPO2);	
-		 SpiCReceivePacket(RxBuf);
-	 }
+	if (EXTI_GetITStatus(EXTI_Line_GPO2) != RESET)
+	{	
+		CC1101DataRecFlag = 1;
+		EXTI_ClearITPendingBit(EXTI_Line_GPO2);
+	}
 }
 

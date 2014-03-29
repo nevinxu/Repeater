@@ -23,6 +23,7 @@
 #include "wifi_application.h"
 #include "nvmem.h"
 #include "Dataprocess.h"
+#include "Lcddisplay.h"
 
 #include  "driver/cc1101.h"
 #include  "driver/w25x40/spi_flash.h"

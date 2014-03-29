@@ -152,9 +152,9 @@ void SPiCPowerUpReset(void);
 //寄存器配置
 void WriteRfSetting(void);
 //发送一组数组
-extern void SpiCSendPacket(u8 *TxBuffer,u8 Size);
+extern void CC1101SendPacket(u8 *TxBuffer,u8 Size);
 //接收数据 
-extern u8 SpiCReceivePacket(u8 *RxBuffer); 
+extern u8 CC1101ReceivePacket(u8 *RxBuffer); 
 //初始化
 extern void CC1101Init(void);
 

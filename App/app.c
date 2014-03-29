@@ -8,25 +8,32 @@ OS_STK TestTaskStk[100];
 OS_STK FlashTaskStk[100];
 OS_STK LCDTaskStk[100];
 
-#define  TASK_START_PRIO           3
-#define  TASK_WLANSEND_PRIO            13
-#define  TASK_WLANRECEIVE_PRIO            11
-#define  TASK_CC1100_PRIO            12
-#define  TASK_TEST_PRIO            5
-#define  TASK_FLASH_PRIO            6
-#define  TASK_LCD_PRIO            7
+#define  TASK_START_PRIO           			3   //越小  优先级越高 
+#define  TASK_WLANSEND_PRIO            	13
+#define  TASK_WLANRECEIVE_PRIO    			11
+#define  TASK_CC1100_PRIO            		7
+#define  TASK_TEST_PRIO            			5
+#define  TASK_FLASH_PRIO            		6
+#define  TASK_LCD_PRIO            			12
 
-static void  taskStart (void  *parg);
-static void  taskwlansend (void  *parg);
-static void  taskwlanreceive (void  *parg);
-static void  taskcc1100 (void  *parg);
-static void taskflash(void *pdata);
-static void tasklcd(void *pdata);
+static void  	taskStart (void  *parg);
+static void 	taskwlansend (void  *parg);
+static void  	taskwlanreceive (void  *parg);
+static void  	taskcc1100 (void  *parg);
+static void 	taskflash(void *pdata);
+static void 	tasklcd(void *pdata);
 
-OS_EVENT *Rate_Semp;
+OS_EVENT *CC1101Rec_Semp;  //cc1101接收不能打断   必须要用信号量
 INT8U err;
 
 unsigned char WiFi_Status;
+
+extern unsigned char  CC1101DataRecFlag;
+extern unsigned char CC1101RxBuf[64];
+unsigned char  DisplayStatus;   //数据显示状态
+unsigned char  DataDisplayRefreshFlag =0; 
+
+
 
 
 int main(void)
@@ -40,14 +47,14 @@ void taskStart (void  *parg)
 {
     (void)parg;
 
-	    OSTaskCreate ( taskwlansend,//
-                   (void *)0, 
-					&WLANSENDTaskStk[99],     //指针地址会出问题的
-                   TASK_WLANSEND_PRIO);  
-	    OSTaskCreate ( taskwlanreceive,//
-                   (void *)0, 
-					&WLANRECEIVETaskStk[99],     //指针地址会出问题的
-                   TASK_WLANRECEIVE_PRIO);   	
+//		OSTaskCreate ( taskwlansend,//
+//                   (void *)0, 
+//					&WLANSENDTaskStk[99],     //指针地址会出问题的
+//                   TASK_WLANSEND_PRIO);  
+//		OSTaskCreate ( taskwlanreceive,//
+//                   (void *)0, 
+//					&WLANRECEIVETaskStk[99],     //指针地址会出问题的
+//                   TASK_WLANRECEIVE_PRIO);   	
 		OSTaskCreate ( taskcc1100,//
                    (void *)0, 
                    &CC1100TaskStk[99], 
@@ -66,21 +73,21 @@ void taskStart (void  *parg)
                    TASK_LCD_PRIO); 
     while (1) {   
 		BSP_Init();			  //系统时钟初始化    modify by  nevinxu 2014.2.8
-        OSTaskSuspend(OS_PRIO_SELF);  
+		OSTaskSuspend(OS_PRIO_SELF);  
     }
 }
 
 void  taskwlanreceive (void  *parg)
 {
 	(void)parg;
-	Rate_Semp = OSSemCreate (1); 
-	OSSemPend(Rate_Semp,0,&err);
-	Board_Init();
+//	Rate_Semp = OSSemCreate (1); 
+//	OSSemPend(Rate_Semp,0,&err);
+//	Board_Init();
 	while(1)
 	{
-	Wifireceive_Function();
-	OSTimeDly(OS_TICKS_PER_SEC/2);
-    }
+		Wifireceive_Function();
+		OSTimeDly(OS_TICKS_PER_SEC/2);
+	}
 }
 
 void  taskwlansend (void  *parg)
@@ -88,27 +95,32 @@ void  taskwlansend (void  *parg)
 	(void)parg;
 	while(1)
 	{
-	OSSemPend(Rate_Semp,0,&err);
-	Wifisend_Function();
-	OSSemPost(Rate_Semp);
-    }
+//		OSSemPend(Rate_Semp,0,&err);
+//		Wifisend_Function();
+//		OSSemPost(Rate_Semp);
+	}
 }
 
 static void taskcc1100(void *pdata)
 {
-	unsigned char TxBuf[30]={0};
-    pdata = pdata; 
-//	CC1101Init();                                    //CC1101 初始化
-
+	pdata = pdata; 
+	CC1101Rec_Semp = OSSemCreate (1); 
+	CC1101Init();                                    //CC1101 初始化
+	DisplayStatus =DataDisplayStatus;
     while(1)
     {
-		OSSemPend(Rate_Semp,0,&err);
-		OSTimeDly(OS_TICKS_PER_SEC/10); 				
-		OSSemPost(Rate_Semp);
-//			SpiCStrobe(CCxxx0_SIDLE);    //进入空闲
-//			TxBuf[1]=1 ; 
-//			TxBuf[2]=1 ; 
-//			SpiCSendPacket(TxBuf,30);
+//		OSSemPend(Rate_Semp,0,&err);
+			OSTimeDly(OS_TICKS_PER_SEC/10); 
+			if(CC1101DataRecFlag)
+			{
+				OSSemPend(CC1101Rec_Semp,0,&err);
+				CC1101ReceivePacket(CC1101RxBuf);  //这里必要需要用信号量互斥  
+				OSSemPost(CC1101Rec_Semp);
+				DataDisplayRefreshFlag = 1;
+				CC1101DateRecProcess();
+				CC1101DataRecFlag = 0;
+			}
+		
     }
 }
 
@@ -124,67 +136,36 @@ static void taskflash(void *pdata)
 	Delay( 200 );
   /* Get SPI Flash ID */
   FlashID = SPI_FLASH_ReadID();
-    while(1)
-    {
-			OSTimeDly(OS_TICKS_PER_SEC/2); 
-    }
+	while(1)
+	{
+		OSTimeDly(OS_TICKS_PER_SEC/2); 
+	}
 }
 
 static void tasklcd(void *pdata)
 {
-	static unsigned Display_Index=0;
+	static unsigned char LastDisplayStatus = 0;
 	pdata = pdata;
 	Initial_Lcd();
-	clear_All();
-	Display_WiFi_Status_Code();
+	DisplayClearAll();
+
 	while(1)
 	{
-			OSTimeDly(OS_TICKS_PER_SEC/2);
-			if((WiFi_Status&0x0f) == NOCONNECT)
-			{
-				Display_WiFi_Status_NoConnect();
-			}
-			else if((WiFi_Status&0x0f)  == SCANNING)
-			{
-				Display_WiFi_Status_Scanning();
-			}
-			else if((WiFi_Status&0x0f)  == SCANOVER)
-			{
-				Display_WiFi_Status_Scanfinish();
-			}
-			else if ((WiFi_Status&0x0f)  == CONNECTING)
-			{
-				if((Display_Index%4)==0)
-				{
-					Display_WiFi_Status_Connecting();
-				}
-				else if((Display_Index%4)==2)
-				{
-					Display_Line_Clear(1);
-				}
-				Display_WiFi_Router_Name();
-			}
-			else if ((WiFi_Status&0x0f)  == CONNECTED)
-			{
-				Display_WiFi_Status_Connected();
-				if((Display_Index%15)==0)
-				{
-					Display_Connect_Type();
-				}
-				else if((Display_Index%15)==5)
-				{
-					Display_WiFi_Router_Name();
-				}
-				else if((Display_Index%15)==10)
-				{
-					Display_WiFi_TCP_Status();
-				}
-				
-			}
-			else if ((WiFi_Status&0x0f)  == RECONNECTED)
-			{
-				Display_WiFi_Status_ReConnecting();
-			}
-			Display_Index++;
+		OSTimeDly(OS_TICKS_PER_SEC);
+		OSSemPend(CC1101Rec_Semp,0,&err);
+		if(DisplayStatus != LastDisplayStatus )
+		{
+			DisplayClearAll();
+		}
+		if(DisplayStatus == WifiStatusDisplayStatus)
+		{
+			WifiStatusDisplay();
+		}
+		else if(DisplayStatus == DataDisplayStatus)
+		{
+			DataDisplay();
+		}
+		LastDisplayStatus = DisplayStatus;
+		OSSemPost(CC1101Rec_Semp);
 	}
 }
