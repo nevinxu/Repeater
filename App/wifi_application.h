@@ -80,6 +80,8 @@ extern void Init_Client(unsigned long* Socket,char * hname, int port);
 extern void  Wifi_Scan(void);
 extern void Wifisend_Function(void);
 extern void Wifireceive_Function(void);
+
+extern void CC3000SendPacket(unsigned char *TxBuffer,unsigned char Size);
    
 #ifdef __cplusplus
 }

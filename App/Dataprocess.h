@@ -23,7 +23,8 @@
 #define	TerminalIDByte						12
 
 
-#define	protocolversionByte				18
+#define	ProtocolVersionByte				18
+#define	HardwareVersionByte				20
 
 #define	CurrentSpeedByte					18
 #define	TotalDripByte							19
@@ -46,4 +47,8 @@
 extern void SendCommand(unsigned int Command, unsigned char *Data,unsigned int Datalength);
 extern void SendRateData(unsigned int RateData);
 extern void CC1101DateRecProcess(void);
+extern void WorkingStateMsgTransmit(unsigned char RecTarget);
+extern void WorkingStateMsgAckTransmit(unsigned char RecTarget);
+extern void LoginTransmit(unsigned char RecTarget);
+extern void LoginAckTransmit(unsigned char RecTarget);
 #endif

@@ -464,7 +464,7 @@ void EXTI9_5_IRQHandler(void)
 {
 	if (EXTI_GetITStatus(EXTI_Line_GPO2) != RESET)
 	{	
-		CC1101DataRecFlag = 1;
+		CC1101DataRecFlag = 0x11;
 		EXTI_ClearITPendingBit(EXTI_Line_GPO2);
 	}
 }

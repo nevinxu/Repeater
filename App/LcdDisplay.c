@@ -14,6 +14,8 @@ const unsigned char TotalDripCode[] = "totaldrip: ";
 const unsigned char TerminalPowerPrecentCode[] = "powerprecent: ";
 const unsigned char WorkingStatusCode[] = "workingstatus: ";
 
+const unsigned char  WiFiStatusCode[] = "wifi status: ";
+
 
 void DisplayItoA(u8 x_start, u8 y_start, u16 data)
 {
@@ -100,135 +102,137 @@ void DisplayItoA(u8 x_start, u8 y_start, u16 data)
 //		DisplayNum(x_start+20*(i-4),y_start,0);
 //  }
 //}
-//void Display_WiFi_Status_Code()
-//{
-//	displayString(0,0,"wifi status:");
-//}
+void Display_WiFi_Status_Code()
+{
+	displayString(0,0,WiFiStatusCode);
+}
 
-//void Display_WiFi_Status_NoConnect()
-//{
-//	displayString(0,16,"no connect");
-//}
+void Display_WiFi_Status_NoConnect()
+{
+	displayString(0,16,"no connect");
+}
 
-//void Display_WiFi_Status_Connecting()
-//{
-//	displayString(0,16,"connecting");
-//}
+void Display_WiFi_Status_Connecting()
+{
+	displayString(0,16,"connecting");
+}
 
-//void Display_WiFi_Status_ReConnecting()
-//{
-//	displayString(0,16,"fail restart");
-//	Display_Line_Clear(2);
-//	Display_Line_Clear(3);
-//}
+void Display_Line_Clear(unsigned char Line)
+{
+	
+	clear_screen(0,Line<<4,128,16,WHILE);
+}
 
-//void Display_Line_Clear(unsigned char Line)
-//{
-//	
-//	clear_screen(0,Line<<4,128,16,WHILE);
-//}
+void Display_WiFi_Status_ReConnecting()
+{
+	displayString(0,16,"fail restart");
+	Display_Line_Clear(2);
+	Display_Line_Clear(3);
+}
 
-//void Display_WiFi_Status_Connected()
-//{
-//	displayString(0,16,"connected");
-//}
 
-//void Display_WiFi_Router_Name()
-//{
-//	//	unsigned char string1[40] = "name: ";
-//	unsigned char *string2;
-//	string2=DEFAULT_OUT_OF_BOX_SSID;
-//	displayString(0,32,"router name:");
-//	displayString(0,48,string2);
-//}
 
-//void Display_Connect_Type()
-//{
-//	displayString(0,32,"socket type:");
-//	if(TCP_Mode == TCPClient_Mode)
-//	{
-//		displayString(0,48,"tcp client");
-//	}
-//	else if(TCP_Mode ==TCPServer_Mode)
-//	{
-//		displayString(0,48,"tcp server");
-//	}
-//}
+void Display_WiFi_Status_Connected()
+{
+	displayString(0,16,"connected");
+}
 
-//void Display_WiFi_Status_Scanning()
-//{
-//	displayString(0,16,"scanning ...");
-//}
+void Display_WiFi_Router_Name()
+{
+	unsigned char *string2;
+	string2=DEFAULT_OUT_OF_BOX_SSID;
+	displayString(0,32,"router name:");
+	displayString(0,48,string2);
+}
 
-//void Display_WiFi_Status_Scanfinish()
-//{
-//	displayString(0,16,"scan	finish");
-//	displayString(0,32,"result ssid:");
-//}
+void Display_Connect_Type()
+{
+	displayString(0,32,"socket type:");
+	if(TCP_Mode == TCPClient_Mode)
+	{
+		displayString(0,48,"tcp client");
+	}
+	else if(TCP_Mode ==TCPServer_Mode)
+	{
+		displayString(0,48,"tcp server");
+	}
+}
 
-//void Display_WiFi_TCP_Status()
-//{
-//	displayString(0,32,"tcp status:");
-//	if((WiFi_Status&0xf0)  == TCPSETTING)
-//	{
-//		displayString(0,48,"setting");
-//	}
-//	else if((WiFi_Status&0xf0)  == TCPOVER)
-//	{
-//		displayString(0,48,"set finish");
-//	}
-//	
-//}
+void Display_WiFi_Status_Scanning()
+{
+	displayString(0,16,"scanning ...");
+}
+
+void Display_WiFi_Status_Scanfinish()
+{
+	displayString(0,16,"scan	finish");
+	displayString(0,32,"result ssid:");
+}
+
+void Display_WiFi_TCP_Status()
+{
+	displayString(0,32,"tcp status:");
+	if((WiFi_Status&0xf0)  == TCPSETTING)
+	{
+		displayString(0,48,"setting");
+	}
+	else if((WiFi_Status&0xf0)  == TCPOVER)
+	{
+		displayString(0,48,"set finish");
+	}
+	
+}
 
 void  WifiStatusDisplay()
 {
-//	static unsigned char Display_Index = 0;
-//			if((WiFi_Status&0x0f) == NOCONNECT)
-//			{
-//				Display_WiFi_Status_NoConnect();
-//			}
-//			else if((WiFi_Status&0x0f)  == SCANNING)
-//			{
-//				Display_WiFi_Status_Scanning();
-//			}
-//			else if((WiFi_Status&0x0f)  == SCANOVER)
-//			{
-//				Display_WiFi_Status_Scanfinish();
-//			}
-//			else if ((WiFi_Status&0x0f)  == CONNECTING)
-//			{
-//				if((Display_Index%4)==0)
-//				{
-//					Display_WiFi_Status_Connecting();
-//				}
-//				else if((Display_Index%4)==2)
-//				{
-//					Display_Line_Clear(1);
-//				}
-//				Display_WiFi_Router_Name();
-//			}
-//			else if ((WiFi_Status&0x0f)  == CONNECTED)
-//			{
-//				Display_WiFi_Status_Connected();
-//				if((Display_Index%15)==0)
-//				{
-//					Display_Connect_Type();
-//				}
-//				else if((Display_Index%15)==5)
-//				{
-//					Display_WiFi_Router_Name();
-//				}
-//				else if((Display_Index%15)==10)
-//				{
-//					Display_WiFi_TCP_Status();
-//				}
-//				
-//			}
-//			else if ((WiFi_Status&0x0f)  == RECONNECTED)
-//			{
-//				Display_WiFi_Status_ReConnecting();
-//			}
-//			Display_Index++;
+	static unsigned char Display_Index = 0;
+	Display_WiFi_Status_Code();
+			if((WiFi_Status&0x0f) == NOCONNECT)
+			{
+				Display_WiFi_Status_NoConnect();
+			}
+			else if((WiFi_Status&0x0f)  == SCANNING)
+			{
+				Display_WiFi_Status_Scanning();
+			}
+			else if((WiFi_Status&0x0f)  == SCANOVER)
+			{
+				Display_WiFi_Status_Scanfinish();
+			}
+			else if ((WiFi_Status&0x0f)  == CONNECTING)
+			{
+				if((Display_Index%4)==0)
+				{
+					Display_WiFi_Status_Connecting();
+				}
+				else if((Display_Index%4)==2)
+				{
+					Display_Line_Clear(1);
+				}
+				Display_WiFi_Router_Name();
+			}
+			else if ((WiFi_Status&0x0f)  == CONNECTED)
+			{
+				Display_WiFi_Status_Connected();
+				if((Display_Index%15)==0)
+				{
+					Display_Connect_Type();
+				}
+				else if((Display_Index%15)==5)
+				{
+					Display_WiFi_Router_Name();
+				}
+				else if((Display_Index%15)==10)
+				{
+					Display_WiFi_TCP_Status();
+				}
+				
+			}
+			else if ((WiFi_Status&0x0f)  == RECONNECTED)
+			{
+				Display_WiFi_Status_ReConnecting();
+			}
+			Display_Index++;
 }
 
 

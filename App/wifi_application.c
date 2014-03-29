@@ -26,6 +26,8 @@ typedef struct   {
 
 
 
+extern unsigned char  CC1101DataRecFlag;
+
 
 unsigned long Deviceipaddr;   //自己ip
 unsigned long Connectedipaddr;   //对方ip
@@ -958,17 +960,29 @@ void Wifi_event_handler(void)
   }
 }
 
+void CC3000SendPacket(u8 *TxBuffer,u8 Size)
+{
+	
+	Wifi_send_data(Server_Port,Connectedipaddr,TxBuffer,Size);
+}
+
+
 void Wifisend_Function()
 {
-	//SendRateData(70);
+	if(CC1101DataRecFlag&0x10)
+	{
+		
+		WorkingStateMsgTransmit(CC3000Target);
+		CC1101DataRecFlag &=~ 0x10;
+	}
 }
 
 void Wifireceive_Function()
 {
 	static unsigned char Heart_Beat_Flag = 0;
 	Wifi_event_handler();
-//    if(SysEvent & RECV_EVENT_HANDLER)
-//    {
+//	if(SysEvent & RECV_EVENT_HANDLER)
+//	{
 //	  Heart_Beat_Flag++;
 //      ClearEvent(RECV_EVENT_HANDLER);
 //      if(Rxlen)
@@ -986,5 +1000,5 @@ void Wifireceive_Function()
 //			ReConnectSocket(DEVICE_LAN_IP,DEVICE_LAN_PORT,TCPClient_Mode);				
 //		}
 //      SetEventTimeOut(RECV_EVENT_HANDLER,50);
-//    }
+//	}
 }

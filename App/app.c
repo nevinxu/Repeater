@@ -1,7 +1,7 @@
 #include 	"includes.h" 
 
 OS_STK GstkStart[100];
-OS_STK WLANSENDTaskStk[100];
+//OS_STK WLANSENDTaskStk[100];
 OS_STK WLANRECEIVETaskStk[100];
 OS_STK CC1100TaskStk[100];
 OS_STK TestTaskStk[100];
@@ -9,15 +9,15 @@ OS_STK FlashTaskStk[100];
 OS_STK LCDTaskStk[100];
 
 #define  TASK_START_PRIO           			3   //越小  优先级越高 
-#define  TASK_WLANSEND_PRIO            	13
-#define  TASK_WLANRECEIVE_PRIO    			11
-#define  TASK_CC1100_PRIO            		7
-#define  TASK_TEST_PRIO            			5
-#define  TASK_FLASH_PRIO            		6
-#define  TASK_LCD_PRIO            			12
+//#define  TASK_WLANSEND_PRIO            	6
+#define  TASK_WLANRECEIVE_PRIO    			7
+#define  TASK_CC1100_PRIO            		4
+#define  TASK_TEST_PRIO            			7
+#define  TASK_FLASH_PRIO            		8
+#define  TASK_LCD_PRIO            			5
 
 static void  	taskStart (void  *parg);
-static void 	taskwlansend (void  *parg);
+//static void 	taskwlansend (void  *parg);
 static void  	taskwlanreceive (void  *parg);
 static void  	taskcc1100 (void  *parg);
 static void 	taskflash(void *pdata);
@@ -51,10 +51,10 @@ void taskStart (void  *parg)
 //                   (void *)0, 
 //					&WLANSENDTaskStk[99],     //指针地址会出问题的
 //                   TASK_WLANSEND_PRIO);  
-//		OSTaskCreate ( taskwlanreceive,//
-//                   (void *)0, 
-//					&WLANRECEIVETaskStk[99],     //指针地址会出问题的
-//                   TASK_WLANRECEIVE_PRIO);   	
+		OSTaskCreate ( taskwlanreceive,//
+                   (void *)0, 
+					&WLANRECEIVETaskStk[99],     //指针地址会出问题的
+                   TASK_WLANRECEIVE_PRIO);   	
 		OSTaskCreate ( taskcc1100,//
                    (void *)0, 
                    &CC1100TaskStk[99], 
@@ -80,45 +80,53 @@ void taskStart (void  *parg)
 void  taskwlanreceive (void  *parg)
 {
 	(void)parg;
-//	Rate_Semp = OSSemCreate (1); 
-//	OSSemPend(Rate_Semp,0,&err);
-//	Board_Init();
+	DisplayStatus = WifiStatusDisplayStatus;
+	Board_Init();
 	while(1)
 	{
 		Wifireceive_Function();
+		if((WiFi_Status&0xf0) == TCPOVER)
+		{
+			DisplayStatus = DataDisplayStatus;
+		}
+		else
+		{
+			DisplayStatus = WifiStatusDisplayStatus;
+		}
 		OSTimeDly(OS_TICKS_PER_SEC/2);
 	}
 }
 
-void  taskwlansend (void  *parg)
-{
-	(void)parg;
-	while(1)
-	{
-//		OSSemPend(Rate_Semp,0,&err);
+//void  taskwlansend (void  *parg)
+//{
+//	(void)parg;
+//	while(1)
+//	{
+//		OSTimeDly(OS_TICKS_PER_SEC/2);
+////		OSSemPend(Rate_Semp,0,&err);
 //		Wifisend_Function();
-//		OSSemPost(Rate_Semp);
-	}
-}
+////		OSSemPost(Rate_Semp);
+//	}
+//}
 
 static void taskcc1100(void *pdata)
 {
 	pdata = pdata; 
 	CC1101Rec_Semp = OSSemCreate (1); 
 	CC1101Init();                                    //CC1101 初始化
-	DisplayStatus =DataDisplayStatus;
+//	DisplayStatus =DataDisplayStatus;
     while(1)
     {
 //		OSSemPend(Rate_Semp,0,&err);
 			OSTimeDly(OS_TICKS_PER_SEC/10); 
-			if(CC1101DataRecFlag)
+			if(CC1101DataRecFlag&0x01)
 			{
 				OSSemPend(CC1101Rec_Semp,0,&err);
 				CC1101ReceivePacket(CC1101RxBuf);  //这里必要需要用信号量互斥  
 				OSSemPost(CC1101Rec_Semp);
 				DataDisplayRefreshFlag = 1;
 				CC1101DateRecProcess();
-				CC1101DataRecFlag = 0;
+				CC1101DataRecFlag &=~ 0x01;
 			}
 		
     }
