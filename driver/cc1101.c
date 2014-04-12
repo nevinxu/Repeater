@@ -48,12 +48,14 @@ typedef struct S_RF_SETTINGS
 
 const RF_SETTINGS rfSettings = 
 {
-		0x00,
+		0x00,		// FSCTRL2   Frequency synthesizer control.
     0x0C,   // FSCTRL1   Frequency synthesizer control.
     0x00,   // FSCTRL0   Frequency synthesizer control.
+	
     0x10,   // FREQ2     Frequency control word, high byte.
     0xA7,   // FREQ1     Frequency control word, middle byte.
     0x62,   // FREQ0     Frequency control word, low byte.
+	
     0x2d,   // MDMCFG4   Modem configuration.
     0x3B,   // MDMCFG3   Modem configuration.
     0x13,   // MDMCFG2   Modem configuration.
@@ -62,11 +64,15 @@ const RF_SETTINGS rfSettings =
 
     0x00,   // CHANNR    Channel number.
     0x62,   // DEVIATN   Modem deviation setting (when FSK modulation is enabled).
+	
     0xB6,   // FREND1    Front end RX configuration.
     0x10,   // FREND0    Front end RX configuration.
+	
     0x18,   // MCSM0     Main Radio Control State Machine configuration.
+		
     0x1D,   // FOCCFG    Frequency Offset Compensation Configuration.
     0x1C,   // BSCFG     Bit synchronization Configuration.
+		
     0xC7,   // AGCCTRL2  AGC control.
     0x00,   // AGCCTRL1  AGC control.
     0xB0,   // AGCCTRL0  AGC control.
@@ -76,9 +82,11 @@ const RF_SETTINGS rfSettings =
     0x00,   // FSCAL1    Frequency synthesizer calibration.
     0x1f,   // FSCAL0    Frequency synthesizer calibration.
     0x59,   // FSTEST    Frequency synthesizer calibration.
+		
     0x88,   // TEST2     Various test settings.
-    0x31,   // TEST1     Various test settings.
+    0x31,   // TEST1     Various test settings.		
     0x09,   // TEST0     Various test settings.
+		
     0x01,   // IOCFG2    GDO2 output pin configuration.
     0x02,   // IOCFG0   GDO0 output pin configuration. Refer to SmartRF?Studio User Manual for detailed pseudo register explanation.
 
@@ -347,11 +355,11 @@ u8 CC1101ReceivePacket(u8 *RxBuffer)
 	SpiCStrobe(CCxxx0_SRX);//进入接收状态
 	if((SpiCReadStatus(CCxxx0_RXBYTES)&BYTES_IN_RXFIFO))//如果接受的字节数不为0
 	{
-		SpiCReadBurstReg(CCxxx0_RXFIFO,RxBuffer,4);//接收数据
-		if((RxBuffer[0] == 0xb4) && (RxBuffer[1] == 0xa5))
+		SpiCReadBurstReg(CCxxx0_RXFIFO,RxBuffer,5);//接收数据
+		if((RxBuffer[1] == 0xb4) && (RxBuffer[2] == 0xa5))
 		{
-			PacketLength = RxBuffer[2] - 4;   //协议规定为16字节长度  不改了
-			SpiCReadBurstReg(CCxxx0_RXFIFO,RxBuffer+4,PacketLength);//接收数据
+			PacketLength = RxBuffer[3] - 4;   //协议规定为16字节长度  不改了
+			SpiCReadBurstReg(CCxxx0_RXFIFO,RxBuffer+5,PacketLength);//接收数据
 		}
 		else
 		{

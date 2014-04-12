@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Obj\wifi_project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Obj\wifi_project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Sun Mar 30 07:48:40 2014
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Sat Apr 12 12:54:24 2014
 <BR><P>
 <H3>Maximum Stack Usage =        448 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -826,10 +826,10 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_md.o(RESET)
 </UL>
 <P><STRONG><a name="[d1]"></a>OS_StrLen</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, os_core.o(.text), UNUSED)
-<BR><BR>[Called By]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSFlagNameGet
+<BR><BR>[Called By]<UL><LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemNameGet
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSFlagNameGet
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSEventNameGet
 <LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSTaskNameGet
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemNameGet
 </UL>
 
 <P><STRONG><a name="[d0]"></a>OSEventNameGet</STRONG> (Thumb, 98 bytes, Stack size 24 bytes, os_core.o(.text), UNUSED)
@@ -1531,7 +1531,13 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[cb]"></a>OS_CPU_SR_Save</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, os_cpu_a.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSFlagQuery
+<BR><BR>[Called By]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemQuery
+<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemPut
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemNameSet
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemNameGet
+<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemGet
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemCreate
+<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSFlagQuery
 <LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSFlagPost
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSFlagPendGetFlagsRdy
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSFlagPend
@@ -1589,16 +1595,16 @@ Global Symbols
 <LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSQDel
 <LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSQCreate
 <LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSQAccept
-<LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemQuery
-<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemPut
-<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemNameSet
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemNameGet
-<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemGet
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemCreate
 </UL>
 
 <P><STRONG><a name="[cd]"></a>OS_CPU_SR_Restore</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, os_cpu_a.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSFlagQuery
+<BR><BR>[Called By]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemQuery
+<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemPut
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemNameSet
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemNameGet
+<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemGet
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemCreate
+<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSFlagQuery
 <LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSFlagPost
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSFlagPendGetFlagsRdy
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSFlagPend
@@ -1656,12 +1662,6 @@ Global Symbols
 <LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSQDel
 <LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSQCreate
 <LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSQAccept
-<LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemQuery
-<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemPut
-<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemNameSet
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemNameGet
-<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemGet
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSMemCreate
 </UL>
 
 <P><STRONG><a name="[f0]"></a>OSStartHighRdy</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, os_cpu_a.o(.text))
