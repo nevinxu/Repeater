@@ -13,6 +13,7 @@
 #define HEARTBEATAckCommand  0x06
 #define TerminalWorkingStateCommand  0x07
 #define TerminalWorkingStateAckCommand  0x08
+#define TerminalWorkingStateReqCommand  0x09
 
 #define	MSGBeginByte							0
 #define	TotalLengthByte						2
@@ -47,6 +48,7 @@
 extern void SendCommand(unsigned int Command, unsigned char *Data,unsigned int Datalength);
 extern void SendRateData(unsigned int RateData);
 extern void CC1101DateRecProcess(void);
+extern void CC1101DateSendProcess(void);
 extern void WorkingStateMsgTransmit(unsigned char RecTarget);
 extern void WorkingStateMsgAckTransmit(unsigned char RecTarget);
 extern void LoginTransmit(unsigned char RecTarget);

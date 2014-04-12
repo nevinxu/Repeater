@@ -158,5 +158,7 @@ extern u8 CC1101ReceivePacket(u8 *RxBuffer);
 //≥ı ºªØ
 extern void CC1101Init(void);
 
+extern void CC1101AddSet(void);
+
 #endif
 

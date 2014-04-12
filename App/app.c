@@ -33,7 +33,7 @@ extern unsigned char CC1101RxBuf[64];
 unsigned char  DisplayStatus;   //数据显示状态
 unsigned char  DataDisplayRefreshFlag =0; 
 
-
+extern unsigned int ModelAddress;
 
 
 int main(void)
@@ -111,6 +111,7 @@ void  taskwlanreceive (void  *parg)
 
 static void taskcc1100(void *pdata)
 {
+	static unsigned TimeNum;  //计时时间
 	pdata = pdata; 
 	CC1101Rec_Semp = OSSemCreate (1); 
 	CC1101Init();                                    //CC1101 初始化
@@ -119,6 +120,7 @@ static void taskcc1100(void *pdata)
     {
 //		OSSemPend(Rate_Semp,0,&err);
 			OSTimeDly(OS_TICKS_PER_SEC/10); 
+			TimeNum++;
 			if(CC1101DataRecFlag&0x01)
 			{
 				OSSemPend(CC1101Rec_Semp,0,&err);
@@ -127,6 +129,17 @@ static void taskcc1100(void *pdata)
 				DataDisplayRefreshFlag = 1;
 				CC1101DateRecProcess();
 				CC1101DataRecFlag &=~ 0x01;
+			}
+			if(TimeNum >=10)   //一秒向发送终端请求发送数据
+			{
+				TimeNum = 0;
+				ModelAddress++;
+				CC1101AddSet();
+				if(ModelAddress>10)
+				{
+					ModelAddress = 0;
+				}
+				CC1101DateSendProcess();			
 			}
 		
     }

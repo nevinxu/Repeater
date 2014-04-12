@@ -148,6 +148,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>RxBuffer</ItemText>
         </Ww>
+        <Ww>
+          <count>1</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>RxBuffer</ItemText>
+        </Ww>
       </WatchWindow1>
       <Tracepoint>
         <THDelay>0</THDelay>
@@ -301,7 +306,7 @@
       <Focus>0</Focus>
       <ColumnNumber>1</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>157</TopLine>
+      <TopLine>158</TopLine>
       <CurrentLine>165</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\App\stm32f10x_it.c</PathWithFileName>
@@ -317,8 +322,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>32</TopLine>
-      <CurrentLine>40</CurrentLine>
+      <TopLine>108</TopLine>
+      <CurrentLine>126</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\App\app.c</PathWithFileName>
       <FilenameWithoutPath>app.c</FilenameWithoutPath>
@@ -349,7 +354,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>135</TopLine>
+      <TopLine>133</TopLine>
       <CurrentLine>140</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\App\DataProcess.c</PathWithFileName>
@@ -627,10 +632,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>59</ColumnNumber>
+      <ColumnNumber>54</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>73</TopLine>
-      <CurrentLine>84</CurrentLine>
+      <TopLine>348</TopLine>
+      <CurrentLine>359</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\cc1101.c</PathWithFileName>
       <FilenameWithoutPath>cc1101.c</FilenameWithoutPath>
@@ -645,7 +650,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>42</TopLine>
+      <TopLine>43</TopLine>
       <CurrentLine>46</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\driver\w25x40\spi_flash.c</PathWithFileName>
@@ -715,9 +720,9 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>4</ColumnNumber>
+      <ColumnNumber>8</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>668</TopLine>
+      <TopLine>669</TopLine>
       <CurrentLine>680</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Library\wlan\evnt_handler.c</PathWithFileName>
@@ -795,7 +800,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>45</ColumnNumber>
+      <ColumnNumber>46</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>551</TopLine>
       <CurrentLine>552</CurrentLine>

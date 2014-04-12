@@ -434,7 +434,7 @@ I (D:\Work\My_Project\Repeater\Repeater_Project\driver\w25x40\spi_flash.h)(0x52F
 I (D:\Work\My_Project\Repeater\Repeater_Project\driver\w25x40\spi_flash_ctrl.h)(0x530866FC)
 I (D:\Work\My_Project\Repeater\Repeater_Project\driver\LCD\UC1701X.h)(0x5336E42F)
 F (..\OS-uCOSII\port\os_cpu_a.asm)(0x52ADBF39)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x--list .\list\os_cpu_a.lst --xref -o .\obj\os_cpu_a.o --depend .\obj\os_cpu_a.d)
-F (..\driver\cc1101.c)(0x5348A096)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\cc1101.o --omf_browse .\obj\cc1101.crf --depend .\obj\cc1101.d)
+F (..\driver\cc1101.c)(0x5348C98F)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\App -I..\Bsp -I..\Library\CM3 -I..\Library\STM32_Lib\inc -I..\\OS-uCOSII\core -I..\\OS-uCOSII\port -I.. -I../Library -I../driver -I..\Library\wlan-I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o .\obj\cc1101.o --omf_browse .\obj\cc1101.crf --depend .\obj\cc1101.d)
 I (D:\Work\My_Project\Repeater\Repeater_Project\App\includes.h)(0x5336DE87)
 I (C:\Keil\ARM\ARMCC\include\stdio.h)(0x51C7B744)
 I (C:\Keil\ARM\ARMCC\include\string.h)(0x5280F581)

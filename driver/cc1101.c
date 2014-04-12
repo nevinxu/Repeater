@@ -5,6 +5,8 @@ u8 PaTabel[8] = {0xC0 ,0xc0 ,0xc0 ,0xc0 ,0xc0 ,0xc0 ,0xc0 ,0xC0};	 // 10dB
 extern unsigned char  CC1101DataRecFlag;
 
 extern unsigned char CC1101RxBuf[64];
+
+extern unsigned int ModelAddress;  //床位号
 // RF_SETTINGS is a data structure which contains all relevant CCxxx0 registers
 
 typedef struct S_RF_SETTINGS
@@ -62,7 +64,7 @@ const RF_SETTINGS rfSettings =
     0x22,   // MDMCFG1   Modem configuration.
     0xF8,   // MDMCFG0   Modem configuration.
 
-    0x00,   // CHANNR    Channel number.
+    0x01,   // CHANNR    Channel number.
     0x62,   // DEVIATN   Modem deviation setting (when FSK modulation is enabled).
 	
     0xB6,   // FREND1    Front end RX configuration.
@@ -331,8 +333,8 @@ void CC1101SendPacket(u8 *TxBuffer,u8 Size)
 	}
 	Delay(30000);
 	SpiCStrobe(CCxxx0_SIDLE);//进入空闲
-//	SpiCStrobe(CCxxx0_SFTX);// 清除缓冲区
-//	SpiCStrobe(CCxxx0_SFRX);// 清除缓冲区
+	SpiCStrobe(CCxxx0_SFTX);// 清除缓冲区
+	SpiCStrobe(CCxxx0_SFRX);// 清除缓冲区
 	SpiCStrobe(CCxxx0_SRX);//进入接收状态
 
 }
@@ -355,11 +357,12 @@ u8 CC1101ReceivePacket(u8 *RxBuffer)
 	SpiCStrobe(CCxxx0_SRX);//进入接收状态
 	if((SpiCReadStatus(CCxxx0_RXBYTES)&BYTES_IN_RXFIFO))//如果接受的字节数不为0
 	{
-		SpiCReadBurstReg(CCxxx0_RXFIFO,RxBuffer,5);//接收数据
-		if((RxBuffer[1] == 0xb4) && (RxBuffer[2] == 0xa5))
+		SpiCReadBurstReg(CCxxx0_RXFIFO,RxBuffer,1);//接收数据
+		SpiCReadBurstReg(CCxxx0_RXFIFO,RxBuffer,4);//接收数据
+		if((RxBuffer[0] == 0xb4) && (RxBuffer[1] == 0xa5))
 		{
-			PacketLength = RxBuffer[3] - 4;   //协议规定为16字节长度  不改了
-			SpiCReadBurstReg(CCxxx0_RXFIFO,RxBuffer+5,PacketLength);//接收数据
+			PacketLength = RxBuffer[2] - 4;   //协议规定为16字节长度  不改了
+			SpiCReadBurstReg(CCxxx0_RXFIFO,RxBuffer+4,PacketLength);//接收数据
 		}
 		else
 		{
@@ -456,6 +459,7 @@ void CC1100_GPIO_Configuration()
 //初始化
 void CC1101Init(void)
 {	
+	unsigned char txBuffer;
 	CC1100_GPIO_Configuration();
 	SPiCPowerUpReset();
 	WriteRfSetting();
@@ -463,6 +467,19 @@ void CC1101Init(void)
 	SPiCWriteReg(CCxxx0_FIFOTHR,0x0e);
 	Delay(1000);	
 	
+	txBuffer= SpiCReadReg(CCxxx0_IOCFG0);//,   0x06
+  txBuffer= SpiCReadReg(CCxxx0_IOCFG2);//,   0x06  
+  txBuffer= SpiCReadReg(CCxxx0_ADDR);  //,   0x00
+	
+	SpiCStrobe(CCxxx0_SIDLE);//进入空闲
+	SpiCStrobe(CCxxx0_SFRX);// 清除缓冲区
+	SpiCStrobe(CCxxx0_SRX);//进入接收状态
+}
+
+void CC1101AddSet()
+{
+	SPiCWriteReg(CCxxx0_CHANNR,ModelAddress);
+	Delay(1000);
 	SpiCStrobe(CCxxx0_SIDLE);//进入空闲
 	SpiCStrobe(CCxxx0_SFRX);// 清除缓冲区
 	SpiCStrobe(CCxxx0_SRX);//进入接收状态

@@ -57,6 +57,25 @@ void MessageHeader()
   TxBuffer[17] = Terminal_ID[5];       
 }
 
+void WorkingStateMsgReqTransmit(unsigned char RecTarget)
+{
+  MsgStatus = WorkingStatus;
+  MsgLength = MessageHeaderLength;
+  SequenceId++;
+  CommandId = TerminalWorkingStateReqCommand;
+  MessageHeader();
+   
+	
+	if(RecTarget == CC1101Target)
+	{
+		CC1101SendPacket( TxBuffer, MsgLength); 
+	}
+	else if(RecTarget == CC3000Target)
+	{
+		;
+	}
+}
+
 void WorkingStateMsgTransmit(unsigned char RecTarget)
 {	
 	MsgStatus = WorkingStatus;
@@ -163,3 +182,9 @@ void CC1101DateRecProcess(void)
 		}
 	}
 }
+
+void CC1101DateSendProcess(void)
+{
+	WorkingStateMsgReqTransmit(CC1101Target);
+}
+	
