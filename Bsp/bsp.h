@@ -47,7 +47,7 @@ unsigned int OS_CPU_SysTickClkFreq (void);
 //EN Pin: PB1
 #define CC3000_EN_CLOCK        RCC_APB2Periph_GPIOB
 #define CC3000_EN_BASE         GPIOB
-#define CC3000_EN_PIN          GPIO_Pin_1
+#define CC3000_EN_PIN          GPIO_Pin_6
 #endif
 #ifdef TEST_DEMO
 //WL_EN Pin: PA15
