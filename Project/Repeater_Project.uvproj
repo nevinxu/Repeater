@@ -452,6 +452,16 @@
               <FileType>1</FileType>
               <FilePath>..\App\LcdDisplay.c</FilePath>
             </File>
+            <File>
+              <FileName>wifi_application.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\App\wifi_application.h</FilePath>
+            </File>
+            <File>
+              <FileName>Dataprocess.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\App\Dataprocess.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -551,6 +561,11 @@
               <FileName>UC1701X.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\driver\LCD\UC1701X.c</FilePath>
+            </File>
+            <File>
+              <FileName>cc1101.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\driver\cc1101.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -22,7 +22,7 @@ typedef struct   {
 #define ENABLE                                      (1)
 #define SL_VERSION_LENGTH                           (11)
 
-#define NETAPP_IPCONFIG_MAC_OFFSET		    (20)
+#define NETAPP_IPCONFIG_MAC_OFFSET		    					(20)
 
 
 
@@ -35,6 +35,8 @@ unsigned short Server_Port =  5678;
 tNetappIpconfigRetArgs Ipconfig;
 
 unsigned char result_ssid[32];  //搜索获取到的ssid值
+
+
 //unsigned char TCP_Mode = TCPServer_Mode;
 unsigned char TCP_Mode = TCPClient_Mode;
  
@@ -70,10 +72,6 @@ unsigned short WIFITxLen = 0;
 unsigned char WIFITxBuf[WIFI_TX_BUF_MAX];
 
 char DeviceMac_Addr[6];
-
-//extern OS_EVENT *Rate_Semp;
-extern INT8U err;
-
 
 
 
@@ -295,7 +293,6 @@ void Set_staticIP(unsigned long ip,unsigned char DHCP)
   else
   {
     pucIP_Addr = ip;
-    //pucIP_DefaultGWAddr = 0x0101a8c0;
     pucIP_DefaultGWAddr = (ip&0x00ffffff) + 0x01000000;
     pucSubnetMask = 0x00ffffff;
     pucDNS = 0;
@@ -418,6 +415,8 @@ unsigned char Set_TCP(unsigned long IP,unsigned short Port,unsigned char Mode)
 	return 0;
 }
 
+
+//重新连接 SOCKET 
 void  ReConnectSocket(unsigned long IP,unsigned short Port,unsigned char Mode)
 {
 	
@@ -436,7 +435,7 @@ void  ReConnectSocket(unsigned long IP,unsigned short Port,unsigned char Mode)
 	tSocketAddr.sa_data[4] = (IP & 0xff0000) >> 16;
 	tSocketAddr.sa_data[5] = IP >> 24;
 	if(Mode == TCPClient_Mode)
-		{
+	{
 			closesocket(ulSocket);
 			Set_ulSocket(Mode);
 			while(connect(ulSocket, &tSocketAddr, sizeof(sockaddr))== -1)
@@ -444,7 +443,7 @@ void  ReConnectSocket(unsigned long IP,unsigned short Port,unsigned char Mode)
 				closesocket(ulSocket);
 				Set_ulSocket(Mode);
 			}
-		}
+	}
 }
 
 static int
@@ -689,17 +688,7 @@ unsigned char ConnectionAP(void)
         ulWifiEvent = WIFI_SMARTCONFIG;
         return 0;
       }
-    } 
-  
-// // /*  
-//    Set_ulSocket();  
-//    
-//    delay_ms(1000);     //nevinxu  2014.1.26   50ms不行  一定要延时多点时间
-//    Set_Port(DEVICE_LAN_IP,DEVICE_LAN_PORT);
-////  */
-////  Init_Client(&ulSocket,"192.168.1.102",5678);  
-//    ulWifiEvent = WIFI_CONNECT_FINISED;
-    
+    }     
     GetdeviceInfo();  
   }
   return 1;
@@ -843,8 +832,6 @@ void Wifi_send_data(unsigned short Port,unsigned long IP,unsigned char *data,uns
       memcpy(&WIFITxBuf[WIFITxLen],data,Len);
       WIFITxLen += Len; 
     }
-////    if (sendto(ulSocket, WIFITxBuf, WIFITxLen, 0, &tSocketAddr_S, sizeof(sockaddr)) == WIFITxLen)
-//    if (send(ulSocket, WIFITxBuf, WIFITxLen, 0))
     if (send(ulTcpSocket, WIFITxBuf, WIFITxLen, 0))
 			
     {
@@ -876,10 +863,6 @@ void Wifi_recv_data(void)
   {
     do
     {
-//      iReturnValue = recvfrom(ulSocket, pucCC3000_Rx_Buffer, 
-//                              CC3000_APP_BUFFER_SIZE, 0, &tSocketAddr_R, 
-//                              &tRxPacketLength);
-
 	  iReturnValue = recv(ulSocket, pucCC3000_Rx_Buffer, 
 							  CC3000_APP_BUFFER_SIZE, 0);
 
@@ -891,9 +874,7 @@ void Wifi_recv_data(void)
           memcpy(&WIFIRxBuf[Rxlen],pucCC3000_Rx_Buffer,iReturnValue);
           Rxlen += iReturnValue; 
         }
-//        RX_Port = tSocketAddr_R.sa_data[0]<<8 | tSocketAddr_R.sa_data[1];
-//        RX_IP = tSocketAddr_R.sa_data[5]<<24 | tSocketAddr_R.sa_data[4]<<16 | 
-//          tSocketAddr_R.sa_data[3]<<8 | tSocketAddr_R.sa_data[2];
+
       }
       else
       {

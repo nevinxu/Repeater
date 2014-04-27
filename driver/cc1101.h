@@ -128,6 +128,8 @@
 #define 	EXTI_Line_GPO2					EXTI_Line8
 #define 	EXTI_IRQn_GPO2					EXTI9_5_IRQn
 
+#define CC1101RECDATABIT						0x01
+
 //SPI初始化
 //从SPI读一个字节 
 u8 SPI_ReadByte(void);

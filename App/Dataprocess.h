@@ -17,10 +17,11 @@
 
 #define	MSGBeginByte							0
 #define	TotalLengthByte						2
-#define	CommandIdByte							4
-#define	ModelAddressByte					5
-#define	SequenceIdByte						7
-#define	StatusByte								11
+#define	ModelAddressByte					4
+#define	CommandIdByte							6
+#define	StatusByte								7
+#define	SequenceIdByte						8
+
 #define	TerminalIDByte						12
 
 

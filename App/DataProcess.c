@@ -7,12 +7,12 @@ extern unsigned short Server_Port;
 
 unsigned char TxBuffer[64];
 unsigned int MsgBegin = 0xA5B4;   //消息识别符
-unsigned int MsgLength;  //消息长度
+unsigned int MsgLength;  //消息长度  `
 unsigned char CommandId; //命令或相应类型
 unsigned int ModelAddress = 0x0001;  //床位号
 long SequenceId = 0;   //消息流水号
 unsigned char MsgStatus;  //消息状态
-unsigned char Terminal_ID[6] = {0x00,0x00,0x00,0x00,0x00,0x01};//唯一标识该终端
+unsigned char Terminal_ID[6] = {0x01,0x02,0x03,0x04,0x05,0x06};//唯一标识该终端
 
 #define MessageHeaderLength  18
 
@@ -41,14 +41,15 @@ void MessageHeader()
   TxBuffer[1] = MsgBegin>>8;
   TxBuffer[2] = MsgLength;
   TxBuffer[3] = MsgLength>>8;
-  TxBuffer[4] = CommandId;
-  TxBuffer[5] = ModelAddress;
-  TxBuffer[6] = ModelAddress>>8;
-  TxBuffer[7] = SequenceId;
-  TxBuffer[8] = SequenceId>>8;
-  TxBuffer[9] = SequenceId>>16;
-  TxBuffer[10] = SequenceId>>24;       
-  TxBuffer[11] = MsgStatus;      
+  TxBuffer[4] = ModelAddress;
+  TxBuffer[5] = ModelAddress>>8;
+	TxBuffer[6] = CommandId;	
+  TxBuffer[7] = MsgStatus; 
+  TxBuffer[8] = SequenceId;
+  TxBuffer[9] = SequenceId>>8;
+  TxBuffer[10] = SequenceId>>16;
+  TxBuffer[11] = SequenceId>>24;   
+     
   TxBuffer[12] = Terminal_ID[0];      
   TxBuffer[13] = Terminal_ID[1];        
   TxBuffer[14] = Terminal_ID[2];        

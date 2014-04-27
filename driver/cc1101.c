@@ -333,7 +333,6 @@ void CC1101SendPacket(u8 *TxBuffer,u8 Size)
 	}
 	Delay(30000);
 	SpiCStrobe(CCxxx0_SIDLE);//进入空闲
-	SpiCStrobe(CCxxx0_SFTX);// 清除缓冲区
 	SpiCStrobe(CCxxx0_SFRX);// 清除缓冲区
 	SpiCStrobe(CCxxx0_SRX);//进入接收状态
 
@@ -482,6 +481,7 @@ void CC1101AddSet()
 	Delay(1000);
 	SpiCStrobe(CCxxx0_SIDLE);//进入空闲
 	SpiCStrobe(CCxxx0_SFRX);// 清除缓冲区
+	SpiCStrobe(CCxxx0_SFTX);// 清除缓冲区
 	SpiCStrobe(CCxxx0_SRX);//进入接收状态
 }
 
@@ -489,7 +489,7 @@ void EXTI9_5_IRQHandler(void)
 {
 	if (EXTI_GetITStatus(EXTI_Line_GPO2) != RESET)
 	{	
-		CC1101DataRecFlag = 0x11;
+		CC1101DataRecFlag = CC1101RECDATABIT;
 		EXTI_ClearITPendingBit(EXTI_Line_GPO2);
 	}
 }

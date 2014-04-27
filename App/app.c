@@ -1,27 +1,25 @@
 #include 	"includes.h" 
 
 OS_STK GstkStart[100];
-//OS_STK WLANSENDTaskStk[100];
-OS_STK WLANRECEIVETaskStk[100];
+OS_STK WLANTaskStk[100];
 OS_STK CC1100TaskStk[100];
-OS_STK TestTaskStk[100];
+OS_STK UartTaskStk[100];
 OS_STK FlashTaskStk[100];
 OS_STK LCDTaskStk[100];
 
 #define  TASK_START_PRIO           			3   //越小  优先级越高 
-//#define  TASK_WLANSEND_PRIO            	6
-#define  TASK_WLANRECEIVE_PRIO    			7
+#define  TASK_WLAN_PRIO    							7
 #define  TASK_CC1100_PRIO            		4
-#define  TASK_TEST_PRIO            			7
+#define  TASK_UART_PRIO            			7
 #define  TASK_FLASH_PRIO            		8
 #define  TASK_LCD_PRIO            			5
 
 static void  	taskStart (void  *parg);
-//static void 	taskwlansend (void  *parg);
-static void  	taskwlanreceive (void  *parg);
-static void  	taskcc1100 (void  *parg);
+static void  	taskwlan (void  *parg);
+static void  	taskcc1101(void  *parg);
 static void 	taskflash(void *pdata);
 static void 	tasklcd(void *pdata);
+
 
 OS_EVENT *CC1101Rec_Semp;  //cc1101接收不能打断   必须要用信号量
 INT8U err;
@@ -47,19 +45,15 @@ void taskStart (void  *parg)
 {
     (void)parg;
 
-//		OSTaskCreate ( taskwlansend,//
-//                   (void *)0, 
-//					&WLANSENDTaskStk[99],     //指针地址会出问题的
-//                   TASK_WLANSEND_PRIO);  
-		OSTaskCreate ( taskwlanreceive,//
-                   (void *)0, 
-					&WLANRECEIVETaskStk[99],     //指针地址会出问题的
-                   TASK_WLANRECEIVE_PRIO);   	
-		OSTaskCreate ( taskcc1100,//
-                   (void *)0, 
-                   &CC1100TaskStk[99], 
-                   TASK_CC1100_PRIO);  
-//			OSTaskCreate ( tasktest,//
+		OSTaskCreate ( 	taskwlan,//
+										(void *)0, 
+										&WLANTaskStk[99],     //指针地址会出问题的
+										TASK_WLAN_PRIO);   	
+		OSTaskCreate ( 	taskcc1101,//
+										(void *)0, 
+										&CC1100TaskStk[99], 
+										TASK_CC1100_PRIO);  
+//			OSTaskCreate ( taskuart,//
 //                   (void *)0, 
 //                   &TestTaskStk[99], 
 //                   TASK_TEST_PRIO); 
@@ -76,8 +70,8 @@ void taskStart (void  *parg)
 		OSTaskSuspend(OS_PRIO_SELF);  
     }
 }
-
-void  taskwlanreceive (void  *parg)
+/*********************************WIFI 任务函数**********************************************/
+void  taskwlan(void  *parg)
 {
 	(void)parg;
 	DisplayStatus = WifiStatusDisplayStatus;
@@ -96,6 +90,8 @@ void  taskwlanreceive (void  *parg)
 		OSTimeDly(OS_TICKS_PER_SEC/2);
 	}
 }
+/********************************************************************************************/
+
 
 //void  taskwlansend (void  *parg)
 //{
@@ -108,43 +104,60 @@ void  taskwlanreceive (void  *parg)
 ////		OSSemPost(Rate_Semp);
 //	}
 //}
-
-static void taskcc1100(void *pdata)
+/*********************************CC1101任务函数**********************************************/
+static void taskcc1101(void *pdata)
 {
-	static unsigned TimeNum;  //计时时间
+	static unsigned CC1101TimeNum;  //计时时间
+	unsigned char ReceiveAckFlag = 0;   //发送接收应答
+	unsigned char ReceiveAckTimeOut;
 	pdata = pdata; 
 	CC1101Rec_Semp = OSSemCreate (1); 
 	CC1101Init();                                    //CC1101 初始化
-//	DisplayStatus =DataDisplayStatus;
     while(1)
     {
-//		OSSemPend(Rate_Semp,0,&err);
-			OSTimeDly(OS_TICKS_PER_SEC/10); 
-			TimeNum++;
-			if(CC1101DataRecFlag&0x01)
+			CC1101TimeNum++;
+			if(CC1101DataRecFlag&CC1101RECDATABIT)
 			{
-				OSSemPend(CC1101Rec_Semp,0,&err);
-				CC1101ReceivePacket(CC1101RxBuf);  //这里必要需要用信号量互斥  
+				
+				OSSemPend(CC1101Rec_Semp,0,&err);//这里必要需要用信号量互斥 
+				CC1101ReceivePacket(CC1101RxBuf);   
 				OSSemPost(CC1101Rec_Semp);
+				
 				DataDisplayRefreshFlag = 1;
 				CC1101DateRecProcess();
-				CC1101DataRecFlag &=~ 0x01;
+				ReceiveAckFlag = 0;
+				CC1101DataRecFlag &=~ CC1101RECDATABIT;
 			}
-			if(TimeNum >=10)   //一秒向发送终端请求发送数据
+			if(CC1101TimeNum >= 100)   //10秒向发送终端请求发送数据
 			{
-				TimeNum = 0;
-				ModelAddress++;
-				CC1101AddSet();
-				if(ModelAddress>10)
+				if(ReceiveAckFlag ==  0)
 				{
-					ModelAddress = 0;
-				}
-				CC1101DateSendProcess();			
+					ReceiveAckFlag = 1;
+					CC1101AddSet();
+					ModelAddress++;
+					if(ModelAddress>10)
+					{
+						ModelAddress = 0;
+						CC1101TimeNum = 0;
+					}
+					CC1101DateSendProcess();	
+				}	
+				ReceiveAckTimeOut++;
+				if(ReceiveAckTimeOut >= 2)  //200ms的超时
+				{
+					ReceiveAckTimeOut = 0;
+					ReceiveAckFlag = 0;
+				}					
 			}
-		
+			OSTimeDly(OS_TICKS_PER_SEC/10);    //定时时间为100ms
     }
 }
+/********************************************************************************************/
 
+
+
+
+/**********************************FLASH任务函数**********************************************/
 
 static void taskflash(void *pdata)
 {
@@ -162,7 +175,12 @@ static void taskflash(void *pdata)
 		OSTimeDly(OS_TICKS_PER_SEC/2); 
 	}
 }
+/********************************************************************************************/
 
+
+
+
+/***********************************显示任务函数*********************************************/
 static void tasklcd(void *pdata)
 {
 	static unsigned char LastDisplayStatus = 0;
@@ -190,3 +208,4 @@ static void tasklcd(void *pdata)
 		OSSemPost(CC1101Rec_Semp);
 	}
 }
+/********************************************************************************************/

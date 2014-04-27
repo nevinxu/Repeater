@@ -328,10 +328,7 @@ void Board_Init(void)
 //  SysTick_Init();
   
   HW_IO_init();
-  
-#ifdef  DEBUG_WU   
-//  UARTConfigure();
-#endif  
+	
 #ifdef TEST_DEMO	
   TIM4_Mode_Config();
 #else
@@ -449,7 +446,6 @@ void TIM2_IRQHandler(void)
       if(++sendratadata_timeout >= 10)
       {
         sendratadata_timeout =0;
-//        g_ucUARTFlag = 1;
       }
        
       SetLEDStatus(TRUE); 

@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\Obj\wifi_project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Obj\wifi_project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Sat Apr 12 21:04:02 2014
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Sun Apr 27 09:30:51 2014
 <BR><P>
 <H3>Maximum Stack Usage =        448 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-taskcc1100 &rArr; CC1101DateRecProcess &rArr; LoginAckTransmit &rArr; CC3000SendPacket &rArr; Wifi_send_data &rArr; send &rArr; simple_link_send &rArr; SimpleLinkWaitEvent &rArr; hci_event_handler &rArr; hci_unsol_handle_patch_request &rArr; hci_patch_send &rArr; SpiWrite &rArr; SpiFirstWrite &rArr; SpiWriteDataSynchronous &rArr; SpiDMATXReconfig &rArr; CC3000_DMA_Config &rArr; DMA_Init
+taskcc1101 &rArr; CC1101DateRecProcess &rArr; LoginAckTransmit &rArr; CC3000SendPacket &rArr; Wifi_send_data &rArr; send &rArr; simple_link_send &rArr; SimpleLinkWaitEvent &rArr; hci_event_handler &rArr; hci_unsol_handle_patch_request &rArr; hci_patch_send &rArr; SpiWrite &rArr; SpiFirstWrite &rArr; SpiWriteDataSynchronous &rArr; SpiDMATXReconfig &rArr; CC3000_DMA_Config &rArr; DMA_Init
 <P>
 <H3>
 Functions with no stack information
@@ -98,9 +98,9 @@ Function Pointers
  <LI><a href="#[63]">sendDriverPatch</a> from wifi_application.o(.text) referenced from wifi_application.o(.text)
  <LI><a href="#[64]">sendWLFWPatch</a> from wifi_application.o(.text) referenced from wifi_application.o(.text)
  <LI><a href="#[3b]">taskStart</a> from app.o(.text) referenced from app.o(.text)
- <LI><a href="#[39]">taskcc1100</a> from app.o(.text) referenced from app.o(.text)
+ <LI><a href="#[39]">taskcc1101</a> from app.o(.text) referenced from app.o(.text)
  <LI><a href="#[3a]">tasklcd</a> from app.o(.text) referenced from app.o(.text)
- <LI><a href="#[38]">taskwlanreceive</a> from app.o(.text) referenced from app.o(.text)
+ <LI><a href="#[38]">taskwlan</a> from app.o(.text) referenced from app.o(.text)
 </UL>
 <P>
 <H3>
@@ -513,7 +513,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Wifi_event_handler
 </UL>
-<BR>[Called By]<UL><LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskwlanreceive
+<BR>[Called By]<UL><LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskwlan
 </UL>
 
 <P><STRONG><a name="[9d]"></a>MessageHeader</STRONG> (Thumb, 124 bytes, Stack size 0 bytes, dataprocess.o(.text))
@@ -581,7 +581,7 @@ Global Symbols
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WorkingStateMsgAckTransmit
 <LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WorkingStateMsgTransmit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1100
+<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1101
 </UL>
 
 <P><STRONG><a name="[51]"></a>CC1101DateSendProcess</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, dataprocess.o(.text))
@@ -589,7 +589,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WorkingStateMsgReqTransmit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1100
+<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1101
 </UL>
 
 <P><STRONG><a name="[a2]"></a>DisplayItoA</STRONG> (Thumb, 212 bytes, Stack size 32 bytes, lcddisplay.o(.text))
@@ -792,7 +792,7 @@ Global Symbols
 <LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
 <LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init_CC3000Driver
 </UL>
-<BR>[Called By]<UL><LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskwlanreceive
+<BR>[Called By]<UL><LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskwlan
 </UL>
 
 <P><STRONG><a name="[c8]"></a>SetLEDStatus</STRONG> (Thumb, 26 bytes, Stack size 8 bytes, bsp.o(.text))
@@ -1276,7 +1276,7 @@ Global Symbols
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_CPU_SR_Save
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_CPU_SR_Restore
 </UL>
-<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1100
+<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1101
 </UL>
 
 <P><STRONG><a name="[11a]"></a>OSSemDel</STRONG> (Thumb, 210 bytes, Stack size 32 bytes, os_sem.o(.text), UNUSED)
@@ -1296,7 +1296,7 @@ Global Symbols
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_CPU_SR_Save
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_CPU_SR_Restore
 </UL>
-<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1100
+<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1101
 <LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tasklcd
 </UL>
 
@@ -1316,7 +1316,7 @@ Global Symbols
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_CPU_SR_Save
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_CPU_SR_Restore
 </UL>
-<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1100
+<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1101
 <LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tasklcd
 </UL>
 
@@ -1465,8 +1465,8 @@ Global Symbols
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_TaskStat
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Initial_Lcd
 <LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskflash
-<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskwlanreceive
-<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1100
+<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskwlan
+<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1101
 <LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tasklcd
 <LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSTimeDlyHMSM
 </UL>
@@ -1822,7 +1822,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101Init
 </UL>
 
-<P><STRONG><a name="[9e]"></a>CC1101SendPacket</STRONG> (Thumb, 182 bytes, Stack size 16 bytes, cc1101.o(.text))
+<P><STRONG><a name="[9e]"></a>CC1101SendPacket</STRONG> (Thumb, 176 bytes, Stack size 16 bytes, cc1101.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = CC1101SendPacket &rArr; SpiCWriteBurstReg &rArr; SPI_ReadWrite
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
@@ -1851,7 +1851,7 @@ Global Symbols
 <LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SpiCReadStatus
 <LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SpiCReadBurstReg
 </UL>
-<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1100
+<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1101
 </UL>
 
 <P><STRONG><a name="[141]"></a>GDO2EXTI_Config</STRONG> (Thumb, 108 bytes, Stack size 24 bytes, cc1101.o(.text))
@@ -1892,20 +1892,20 @@ Global Symbols
 <LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SpiCWriteBurstReg
 <LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPiCWriteReg
 </UL>
-<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1100
+<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1101
 </UL>
 
-<P><STRONG><a name="[50]"></a>CC1101AddSet</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, cc1101.o(.text))
+<P><STRONG><a name="[50]"></a>CC1101AddSet</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, cc1101.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = CC1101AddSet &rArr; SPiCWriteReg &rArr; SPI_ReadWrite
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay
 <LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SpiCStrobe
 <LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPiCWriteReg
 </UL>
-<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1100
+<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;taskcc1101
 </UL>
 
-<P><STRONG><a name="[21]"></a>EXTI9_5_IRQHandler</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, cc1101.o(.text))
+<P><STRONG><a name="[21]"></a>EXTI9_5_IRQHandler</STRONG> (Thumb, 26 bytes, Stack size 8 bytes, cc1101.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = EXTI9_5_IRQHandler
 </UL>
 <BR>[Calls]<UL><LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI_GetITStatus
@@ -3872,9 +3872,9 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> app.o(.text)
 </UL>
-<P><STRONG><a name="[39]"></a>taskcc1100</STRONG> (Thumb, 140 bytes, Stack size 0 bytes, app.o(.text))
+<P><STRONG><a name="[39]"></a>taskcc1101</STRONG> (Thumb, 156 bytes, Stack size 0 bytes, app.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 448 + Unknown Stack Size
-<LI>Call Chain = taskcc1100 &rArr; CC1101DateRecProcess &rArr; LoginAckTransmit &rArr; CC3000SendPacket &rArr; Wifi_send_data &rArr; send &rArr; simple_link_send &rArr; SimpleLinkWaitEvent &rArr; hci_event_handler &rArr; hci_unsol_handle_patch_request &rArr; hci_patch_send &rArr; SpiWrite &rArr; SpiFirstWrite &rArr; SpiWriteDataSynchronous &rArr; SpiDMATXReconfig &rArr; CC3000_DMA_Config &rArr; DMA_Init
+<LI>Call Chain = taskcc1101 &rArr; CC1101DateRecProcess &rArr; LoginAckTransmit &rArr; CC3000SendPacket &rArr; Wifi_send_data &rArr; send &rArr; simple_link_send &rArr; SimpleLinkWaitEvent &rArr; hci_event_handler &rArr; hci_unsol_handle_patch_request &rArr; hci_patch_send &rArr; SpiWrite &rArr; SpiFirstWrite &rArr; SpiWriteDataSynchronous &rArr; SpiDMATXReconfig &rArr; CC3000_DMA_Config &rArr; DMA_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSTimeDly
 <LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSSemPost
@@ -3888,9 +3888,9 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> app.o(.text)
 </UL>
-<P><STRONG><a name="[38]"></a>taskwlanreceive</STRONG> (Thumb, 50 bytes, Stack size 0 bytes, app.o(.text))
+<P><STRONG><a name="[38]"></a>taskwlan</STRONG> (Thumb, 50 bytes, Stack size 0 bytes, app.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 424 + Unknown Stack Size
-<LI>Call Chain = taskwlanreceive &rArr; Wifireceive_Function &rArr; Wifi_event_handler &rArr; ConnectUsingSSID &rArr; TCPServer &rArr; Set_TCP &rArr; accept &rArr; SimpleLinkWaitEvent &rArr; hci_event_handler &rArr; hci_unsol_handle_patch_request &rArr; hci_patch_send &rArr; SpiWrite &rArr; SpiFirstWrite &rArr; SpiWriteDataSynchronous &rArr; SpiDMATXReconfig &rArr; CC3000_DMA_Config &rArr; DMA_Init
+<LI>Call Chain = taskwlan &rArr; Wifireceive_Function &rArr; Wifi_event_handler &rArr; ConnectUsingSSID &rArr; TCPServer &rArr; Set_TCP &rArr; accept &rArr; SimpleLinkWaitEvent &rArr; hci_event_handler &rArr; hci_unsol_handle_patch_request &rArr; hci_patch_send &rArr; SpiWrite &rArr; SpiFirstWrite &rArr; SpiWriteDataSynchronous &rArr; SpiDMATXReconfig &rArr; CC3000_DMA_Config &rArr; DMA_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Wifireceive_Function
 <LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSTimeDly

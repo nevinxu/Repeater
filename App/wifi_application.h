@@ -21,7 +21,7 @@ extern "C"
 #define AP_SECURITY                   "147huihui258fangfang369"	
 	
 	
-#define DEVICE_LAN_PORT         5678            //默认端口号
+#define DEVICE_LAN_PORT         7890            //默认端口号
 #define DEVICE_LAN_IP        0x6601A8C0
 //#define DEVICE_LAN_IP        0x0201A8C0
 
@@ -29,7 +29,7 @@ extern "C"
 //#define DEVICE_LAN_IP        0x6601A8C0
 
 
-#define SERVER_LAN_PORT         5678            //默认端口号
+#define SERVER_LAN_PORT         7890            //默认端口号
 #define SERVER_LAN_IP        0x6FA80166     //111
 #define INADDR_ANY						0
 	
