@@ -19,7 +19,8 @@
 #define LCD_RST_CLOCK            RCC_APB2Periph_GPIOB
 #define LCD_RST_BASE             GPIOB
 //#define LCD_RST_PIN              GPIO_Pin_6   //管脚损坏
-#define LCD_RST_PIN              GPIO_Pin_9
+//#define LCD_RST_PIN              GPIO_Pin_9   //老板子
+#define LCD_RST_PIN              GPIO_Pin_1			//新板子
 
 #define LCD_CS_CLOCK            RCC_APB2Periph_GPIOB
 #define LCD_CS_BASE             GPIOB
