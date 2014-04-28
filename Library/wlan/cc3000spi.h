@@ -93,6 +93,42 @@ typedef void (*gcSpiHandleTx)(void);
 #define SPI_DMA_TX_CHANNEL              DMA1_Channel3
 
 
+#ifdef TEST_DEMO	
+//EN Pin: PB0
+#define CC3000_EN_CLOCK        RCC_APB2Periph_GPIOA
+#define CC3000_EN_BASE         GPIOB
+#define CC3000_EN_PIN          GPIO_Pin_0
+#else
+//EN Pin: PB1
+#define CC3000_EN_CLOCK        RCC_APB2Periph_GPIOB
+#define CC3000_EN_BASE         GPIOA
+#define CC3000_EN_PIN          GPIO_Pin_0
+#endif
+#ifdef TEST_DEMO
+//WL_EN Pin: PA15
+#define WL_EN_CLOCK            RCC_APB2Periph_GPIOA
+#define WL_EN_BASE             GPIOA
+#define WL_EN_PIN              GPIO_Pin_15
+#else
+//WL_EN Pin: PA0
+#define WL_EN_CLOCK            RCC_APB2Periph_GPIOA
+#define WL_EN_BASE             GPIOB
+#define WL_EN_PIN              GPIO_Pin_6
+
+#endif
+
+#ifdef TEST_DEMO	
+//PWM_32K PIN PB9
+#define PWM_32K_CLOCK                  RCC_APB2Periph_GPIOB
+#define PWM_32K_BASE                   GPIOB
+#define PWM_32K_PIN                    GPIO_Pin_9
+#else
+//PWM_32K PIN PB0
+#define PWM_32K_CLOCK                  RCC_APB2Periph_GPIOB
+#define PWM_32K_BASE                   GPIOB
+#define PWM_32K_PIN                    GPIO_Pin_0
+#endif
+
 typedef enum
 {
   SPI_DMA_TX = 0,

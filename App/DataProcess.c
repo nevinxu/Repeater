@@ -14,6 +14,10 @@ long SequenceId = 0;   //消息流水号
 unsigned char MsgStatus;  //消息状态
 unsigned char Terminal_ID[6] = {0x01,0x02,0x03,0x04,0x05,0x06};//唯一标识该终端
 
+
+unsigned char LastTimeDelay;
+unsigned char PackageLoseNum;
+
 #define MessageHeaderLength  18
 
 unsigned short ProtocolVersion;
@@ -99,6 +103,27 @@ void WorkingStateMsgTransmit(unsigned char RecTarget)
 	}
 }
 
+
+void HeartBeatTransmit(unsigned char RecTarget)
+{
+  MsgStatus = HeartBeatStatus;
+  MsgLength = MessageHeaderLength+2;
+//  SequenceId++;
+  CommandId = HEARTBEATCommand;
+  TxBuffer[18] = LastTimeDelay;
+  TxBuffer[19] = PackageLoseNum;
+  MessageHeader();
+	if(RecTarget == CC1101Target)
+	{
+		CC1101SendPacket( TxBuffer, MsgLength); 
+	}
+	else if(RecTarget == CC3000Target)
+	{
+		CC3000SendPacket( TxBuffer, MsgLength);
+	}
+}
+
+
 void WorkingStateMsgAckTransmit(unsigned char RecTarget)
 {
   MsgStatus = WorkingStatus;
@@ -168,7 +193,7 @@ void CC1101DateRecProcess(void)
 			TotalDrip = CC1101RxBuf[TotalDripByte]+ (CC1101RxBuf[TotalDripByte+1]<<8);
 			TerminalPowerPrecent = CC1101RxBuf[TerminalPowerByte];			
 			WorkingStateMsgAckTransmit(CC1101Target);
-			WorkingStateMsgTransmit(CC3000Target);
+//			WorkingStateMsgTransmit(CC3000Target);
 		}
 	}
 	else if(CC1101RxBuf[CommandIdByte] == TerminalLoginCommand)  //登陆状态接收包

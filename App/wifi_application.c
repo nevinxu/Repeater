@@ -21,12 +21,13 @@ typedef struct   {
 #define DISABLE                                     (0)
 #define ENABLE                                      (1)
 #define SL_VERSION_LENGTH                           (11)
-
 #define NETAPP_IPCONFIG_MAC_OFFSET		    					(20)
 
 
 
 extern unsigned char  CC1101DataRecFlag;
+
+unsigned char Heart_Beat_Flag;
 
 
 unsigned long Deviceipaddr;   //×Ô¼ºip
@@ -75,21 +76,8 @@ char DeviceMac_Addr[6];
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//#pragma is used for determine the memory location for a specific variable.                            ///
-//__no_init is used to prevent the buffer initialization in order to prevent hardware WDT expiration    ///
-// before entering to 'main()'.                                                                         ///
-//for every IDE, different syntax exists :          1.   __CCS__ for CCS v5                             ///
-//                                                  2.  __IAR_SYSTEMS_ICC__ for IAR Embedded Workbench  ///
-// *CCS does not initialize variables - therefore, __no_init is not needed.                             ///
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Reception from the air, buffer - the max data length  + headers
-//
-#ifdef __IAR_SYSTEMS_ICC__
-__no_init unsigned char pucCC3000_Rx_Buffer[CC3000_APP_BUFFER_SIZE + CC3000_RX_BUFFER_OVERHEAD_SIZE];
-#else
+
 unsigned char pucCC3000_Rx_Buffer[CC3000_APP_BUFFER_SIZE + CC3000_RX_BUFFER_OVERHEAD_SIZE];
-#endif
 
 
 volatile unsigned long EventTimeOut[EVENT_MAX_COUNT] = {0,0,0,0,0,0,0,0};
@@ -366,9 +354,6 @@ void Set_ulSocket(unsigned char Mode)
 //  setsockopt(ulSocket,SOL_SOCKET,SOCKOPT_RECV_TIMEOUT,&timeout,sizeof(timeout));
   setsockopt(ulSocket,SOL_SOCKET,SOCKOPT_RECV_NONBLOCK,&timeout,sizeof(timeout));
 
-////  timeout = 300;//5 minutes
-//	timeout = 10;//5 minutes
-//  netapp_timeout_values(&aucDHCP, &aucARP, &aucKeepalive, &timeout);
 
 }
 
@@ -594,11 +579,6 @@ void StartSmartConfig(void)
     // Reset all the previous configuration
     wlan_ioctl_set_connection_policy(DISABLE, DISABLE, DISABLE);
       
-#ifdef  DEBUG_WU 
-    sprintf(uart_msg_str,(char *)"Delete profile\n");
-    UartSendPacket(uart_msg_str, strlen(uart_msg_str));
-#endif
-      
     wlan_ioctl_del_profile(255);
     
     //Wait until CC3000 is disconnected
@@ -658,10 +638,7 @@ void StartSmartConfig(void)
       ucStopSmartConfig = 0;
     }
     
-//    Set_ulSocket();
-//    
-//    Set_Port(DEVICE_LAN_IP,DEVICE_LAN_PORT);
-    
+		
     ulWifiEvent = WIFI_SMARTCONFIG_FINISED;
     
     GetdeviceInfo();
@@ -960,12 +937,11 @@ void Wifisend_Function()
 
 void Wifireceive_Function()
 {
-	static unsigned char Heart_Beat_Flag = 0;
 	Wifi_event_handler();
-//	if(SysEvent & RECV_EVENT_HANDLER)
-//	{
-//	  Heart_Beat_Flag++;
-//      ClearEvent(RECV_EVENT_HANDLER);
+	if(SysEvent & RECV_EVENT_HANDLER)
+	{
+	  Heart_Beat_Flag++;
+      ClearEvent(RECV_EVENT_HANDLER);
 //      if(Rxlen)
 //      {
 //        if(WIFIRxBuf[Rxlen-1]== '1')
@@ -975,11 +951,11 @@ void Wifireceive_Function()
 //        memset (WIFIRxBuf, 0, Rxlen);  
 //        Rxlen = 0;
 //      }
-//		if(Heart_Beat_Flag >= 2)
-//		{
-//			Heart_Beat_Flag = 0;
-//			ReConnectSocket(DEVICE_LAN_IP,DEVICE_LAN_PORT,TCPClient_Mode);				
-//		}
-//      SetEventTimeOut(RECV_EVENT_HANDLER,50);
-//	}
+		if(Heart_Beat_Flag >= 20)
+		{
+			Heart_Beat_Flag = 0;
+			ReConnectSocket(DEVICE_LAN_IP,DEVICE_LAN_PORT,TCPClient_Mode);				
+		}
+      SetEventTimeOut(RECV_EVENT_HANDLER,50);
+	}
 }

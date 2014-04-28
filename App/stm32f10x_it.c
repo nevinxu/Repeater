@@ -126,28 +126,14 @@ void DebugMon_Handler(void)
   * @param  None
   * @retval None
   */
-//void PendSV_Handler(void)
-//{
-//}
+
 
 /**
   * @brief  This function handles SysTick Handler.
   * @param  None
   * @retval None
   */
-//void SysTick_Handler(void)
-//{
-//    OS_CPU_SR  cpu_sr;
 
-
-//    OS_ENTER_CRITICAL();                         /* Tell uC/OS-II that we are starting an ISR          */
-//    OSIntNesting++;
-//    OS_EXIT_CRITICAL();
-
-//    OSTimeTick();                                /* Call uC/OS-II's OSTimeTick()                       */
-
-//    OSIntExit();                                 /* Tell uC/OS-II that we are leaving the ISR          */
-//}
 
 /******************************************************************************/
 /*                 STM32F10x Peripherals Interrupt Handlers                   */
@@ -161,34 +147,7 @@ void DebugMon_Handler(void)
   * @param  None
   * @retval None
   */
-/*void PPP_IRQHandler(void)
-{
-}*/
 
-//void SPI1_IRQHandler(void)
-//{
-//if(SPI_I2S_GetITStatus(SPI1,SPI_I2S_IT_RXNE)==SET)
-//{
-//  SPI_I2S_ClearITPendingBit(SPI1,SPI_I2S_IT_RXNE);
-//  SpiIntHandler();
-//}
-//}
-
-
-//void EXTI1_IRQHandler(void)
-//{
-//  OS_CPU_SR  cpu_sr;
-//	
-//  OS_ENTER_CRITICAL();
-//  OSIntNesting++;
-//  OS_EXIT_CRITICAL();
-//  if(EXTI_GetITStatus(EXTI_Line1) != RESET)
-//  {
-//    EXTI_ClearITPendingBit(EXTI_Line1);
-//		SpiIntGPIOHandler();
-//  }
-//  OSIntExit();
-//}
 
 
 /**

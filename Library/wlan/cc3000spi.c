@@ -6,7 +6,6 @@
 //! @{
 //
 //*****************************************************************************
-#include "includes.h"
 #include "hci.h"
 #include "cc3000spi.h"
 #include "evnt_handler.h"
@@ -81,6 +80,15 @@ __no_init unsigned char wlan_tx_buffer[CC3000_TX_BUFFER_SIZE];
 #else
 unsigned char wlan_tx_buffer[CC3000_TX_BUFFER_SIZE];
 #endif
+
+
+static  void delay(unsigned int n)
+{
+unsigned int i,j;
+	for(i=0;i<n;i++)
+	for(j=0;j<1000;j++);
+	
+}
 
 //*****************************************************************************
 //
@@ -253,6 +261,42 @@ void SpiDMATXReconfig(unsigned char *tx_buffer,unsigned short NumData)
 }
 
 
+//TIM3_Mode_Config PWM_32K_output
+static void TIM3_Mode_Config(void)
+{
+  //定时器初始化结构
+  TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+  //定时器通道初始化结构
+  TIM_OCInitTypeDef TIM_OCInitStructure;
+  
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3,ENABLE);
+  
+  TIM_TimeBaseStructure.TIM_Period = 2196;     //F103
+  //设置预设分频：
+  TIM_TimeBaseStructure.TIM_Prescaler = 0;
+  
+  TIM_TimeBaseStructure.TIM_ClockDivision = 0; //设置时钟分频系数：
+  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;//向上计数模式
+  TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
+  
+  //PWM1 Mode configuration: Channel3
+  TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1; //配置为PWM模式1
+  
+  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+  //设置跳变值，当计数器计数到这个值时，电平发生跳变
+
+  TIM_OCInitStructure.TIM_Pulse = 1098;   //F103
+  //当定时器计数值小于CCR1——Val 时为高电平
+  TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+  
+  TIM_OC3Init(TIM3, &TIM_OCInitStructure);//使能通道3
+  TIM_OC3PreloadConfig(TIM3, TIM_OCPreload_Enable);
+  
+  TIM_ARRPreloadConfig(TIM3, ENABLE);
+  //使能定时器3
+  TIM_Cmd(TIM3, DISABLE);
+}
+
 //*****************************************************************************
 //
 //!  init_spi
@@ -352,7 +396,36 @@ int init_spi(void)
 
 		SpiCC3000DMAInit(); 
     
-    delay_ms(20);
+    delay(20);
+		RCC_APB2PeriphClockCmd(CC3000_EN_CLOCK, ENABLE);
+		RCC_APB2PeriphClockCmd(WL_EN_CLOCK, ENABLE);
+		//Config GPIO - EN pin
+		gpio.GPIO_Mode = GPIO_Mode_Out_PP;
+		gpio.GPIO_Pin = CC3000_EN_PIN;
+		gpio.GPIO_Speed = GPIO_Speed_50MHz;
+		GPIO_Init(CC3000_EN_BASE, &gpio);
+  
+  //WL_EN
+		gpio.GPIO_Mode = GPIO_Mode_Out_OD;
+		gpio.GPIO_Pin = WL_EN_PIN;
+		gpio.GPIO_Speed = GPIO_Speed_50MHz;
+		GPIO_Init(WL_EN_BASE, &gpio);
+  
+  //SET WL_EN low
+		GPIO_ResetBits(WL_EN_BASE, WL_EN_PIN);
+  
+  // Disable WLAN chip
+		GPIO_SetBits(CC3000_EN_BASE, CC3000_EN_PIN);
+		
+		RCC_APB2PeriphClockCmd(PWM_32K_CLOCK, ENABLE);
+		  //PWM_32K_OUTPUT
+		gpio.GPIO_Mode = GPIO_Mode_AF_OD;
+		gpio.GPIO_Pin = PWM_32K_PIN;
+		gpio.GPIO_Speed = GPIO_Speed_50MHz;
+		GPIO_Init(PWM_32K_BASE, &gpio);
+		
+		TIM3_Mode_Config();	 
+		
     return (ESUCCESS);
 }
 
@@ -432,7 +505,7 @@ void WriteWlanPin(unsigned char val)
     if (val)
     {
         GPIO_ResetBits(CC3000_EN_BASE, CC3000_EN_PIN);
-        delay_ms(100);
+        delay(100);
         GPIO_SetBits(WL_EN_BASE, WL_EN_PIN);
     }
     else

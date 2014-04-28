@@ -54,4 +54,5 @@ extern void WorkingStateMsgTransmit(unsigned char RecTarget);
 extern void WorkingStateMsgAckTransmit(unsigned char RecTarget);
 extern void LoginTransmit(unsigned char RecTarget);
 extern void LoginAckTransmit(unsigned char RecTarget);
+extern void HeartBeatTransmit(unsigned char RecTarget);
 #endif

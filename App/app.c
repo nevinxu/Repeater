@@ -2,14 +2,14 @@
 
 OS_STK GstkStart[100];
 OS_STK WLANTaskStk[100];
-OS_STK CC1100TaskStk[100];
+OS_STK CC1101TaskStk[100];
 OS_STK UartTaskStk[100];
 OS_STK FlashTaskStk[100];
 OS_STK LCDTaskStk[100];
 
 #define  TASK_START_PRIO           			3   //越小  优先级越高 
 #define  TASK_WLAN_PRIO    							7
-#define  TASK_CC1100_PRIO            		4
+#define  TASK_CC1101_PRIO            		4
 #define  TASK_UART_PRIO            			7
 #define  TASK_FLASH_PRIO            		8
 #define  TASK_LCD_PRIO            			5
@@ -28,10 +28,13 @@ unsigned char WiFi_Status;
 
 extern unsigned char  CC1101DataRecFlag;
 extern unsigned char CC1101RxBuf[64];
+
+
 unsigned char  DisplayStatus;   //数据显示状态
 unsigned char  DataDisplayRefreshFlag =0; 
 
 extern unsigned int ModelAddress;
+extern unsigned char Heart_Beat_Flag;
 
 
 int main(void)
@@ -51,8 +54,12 @@ void taskStart (void  *parg)
 										TASK_WLAN_PRIO);   	
 		OSTaskCreate ( 	taskcc1101,//
 										(void *)0, 
-										&CC1100TaskStk[99], 
-										TASK_CC1100_PRIO);  
+										&CC1101TaskStk[99], 
+										TASK_CC1101_PRIO);  
+		OSTaskCreate ( tasklcd,//
+                   (void *)0, 
+                   &LCDTaskStk[99], 
+                   TASK_LCD_PRIO); 
 //			OSTaskCreate ( taskuart,//
 //                   (void *)0, 
 //                   &TestTaskStk[99], 
@@ -61,10 +68,7 @@ void taskStart (void  *parg)
 //                   (void *)0, 
 //                   &FlashTaskStk[99], 
 //                   TASK_FLASH_PRIO); 
-			OSTaskCreate ( tasklcd,//
-                   (void *)0, 
-                   &LCDTaskStk[99], 
-                   TASK_LCD_PRIO); 
+
     while (1) {   
 		BSP_Init();			  //系统时钟初始化    modify by  nevinxu 2014.2.8
 		OSTaskSuspend(OS_PRIO_SELF);  
@@ -87,23 +91,14 @@ void  taskwlan(void  *parg)
 		{
 			DisplayStatus = WifiStatusDisplayStatus;
 		}
+//		HeartBeatTransmit(CC3000Target);
 		OSTimeDly(OS_TICKS_PER_SEC/2);
 	}
 }
 /********************************************************************************************/
 
 
-//void  taskwlansend (void  *parg)
-//{
-//	(void)parg;
-//	while(1)
-//	{
-//		OSTimeDly(OS_TICKS_PER_SEC/2);
-////		OSSemPend(Rate_Semp,0,&err);
-//		Wifisend_Function();
-////		OSSemPost(Rate_Semp);
-//	}
-//}
+
 /*********************************CC1101任务函数**********************************************/
 static void taskcc1101(void *pdata)
 {
@@ -113,8 +108,8 @@ static void taskcc1101(void *pdata)
 	pdata = pdata; 
 	CC1101Rec_Semp = OSSemCreate (1); 
 	CC1101Init();                                    //CC1101 初始化
-    while(1)
-    {
+	while(1)
+	{
 			CC1101TimeNum++;
 			if(CC1101DataRecFlag&CC1101RECDATABIT)
 			{
@@ -125,6 +120,7 @@ static void taskcc1101(void *pdata)
 				
 				DataDisplayRefreshFlag = 1;
 				CC1101DateRecProcess();
+				Heart_Beat_Flag = 0;
 				ReceiveAckFlag = 0;
 				CC1101DataRecFlag &=~ CC1101RECDATABIT;
 			}
@@ -150,7 +146,7 @@ static void taskcc1101(void *pdata)
 				}					
 			}
 			OSTimeDly(OS_TICKS_PER_SEC/10);    //定时时间为100ms
-    }
+	}
 }
 /********************************************************************************************/
 
@@ -176,8 +172,6 @@ static void taskflash(void *pdata)
 	}
 }
 /********************************************************************************************/
-
-
 
 
 /***********************************显示任务函数*********************************************/

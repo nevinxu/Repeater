@@ -25,7 +25,7 @@
 #include "Dataprocess.h"
 #include "Lcddisplay.h"
 
-#include  "driver/cc1101.h"
+#include  "cc1101.h"
 #include  "driver/w25x40/spi_flash.h"
 #include 	"driver/w25x40/spi_flash_ctrl.h"
 #include 	"driver/LCD/UC1701X.h"

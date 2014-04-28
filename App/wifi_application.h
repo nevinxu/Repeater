@@ -23,10 +23,6 @@ extern "C"
 	
 #define DEVICE_LAN_PORT         7890            //默认端口号
 #define DEVICE_LAN_IP        0x6601A8C0
-//#define DEVICE_LAN_IP        0x0201A8C0
-
-//#define DEVICE_LAN_PORT         5678            //默认端口号
-//#define DEVICE_LAN_IP        0x6601A8C0
 
 
 #define SERVER_LAN_PORT         7890            //默认端口号
@@ -34,14 +30,9 @@ extern "C"
 #define INADDR_ANY						0
 	
 
-  
 #define WIFI_RX_BUF_MAX    1024
 #define WIFI_TX_BUF_MAX    1024
-  
-#define in_range(c, lo, up)  ((unsigned char)c >= lo && (unsigned char)c <= up)
-
-  
-#define ip4_addr_set_u32(dest_ipaddr, src_u32) ((dest_ipaddr)->addr = (src_u32))  
+ 
 	
 #define TCPClient_Mode 1
 #define TCPServer_Mode 2	
@@ -49,40 +40,30 @@ extern "C"
   
 extern volatile unsigned long ulSmartConfigFinished, ulCC3000Connected, ulCC3000DHCP,OkToDoShutDown, ulCC3000DHCP_configured;
 extern volatile unsigned char ucStopSmartConfig;
-
 extern volatile unsigned char ulWifiEvent;
-
 extern unsigned short WIFIRxLen;
 extern unsigned char WIFIRxBuf[WIFI_RX_BUF_MAX];
-
 extern unsigned short WIFITxLen;
 extern unsigned char WIFITxBuf[WIFI_TX_BUF_MAX];
-
 extern char DeviceMac_Addr[6];
 
+#define in_range(c, lo, up)  ((unsigned char)c >= lo && (unsigned char)c <= up)
+#define ip4_addr_set_u32(dest_ipaddr, src_u32) ((dest_ipaddr)->addr = (src_u32))  
+
 extern int Init_CC3000Driver(void);
-
 extern unsigned char  GetdeviceInfo(void);
-
 extern void Wifi_recv_data(void);
-
 extern void Wifi_send_data(unsigned short Port,unsigned long IP,unsigned char *data,unsigned short Len);
-
 extern unsigned char ConnectionAP(void);
-
 extern void Wifi_event_handler(void);
-
 extern void StartSmartConfig(void);
-
 extern unsigned char ConnectionAP(void);
 extern void  ReConnectSocket(unsigned long IP,unsigned short Port,unsigned char Mode);
 extern void Init_Client(unsigned long* Socket,char * hname, int port);
 extern void  Wifi_Scan(void);
 extern void Wifisend_Function(void);
 extern void Wifireceive_Function(void);
-
 extern void CC3000SendPacket(unsigned char *TxBuffer,unsigned char Size);
-   
 #ifdef __cplusplus
 }
 #endif

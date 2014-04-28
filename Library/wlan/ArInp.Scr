@@ -1,0 +1,10 @@
+--create .\CC3000_Lib.lib
+.\netapp.o
+.\nvmem.o
+.\security.o
+.\socket.o
+.\wlan.o
+.\cc3000_common.o
+.\evnt_handler.o
+.\hci.o
+.\cc3000spi.o

@@ -351,7 +351,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_MD,USE_STDPERIPH_DRIVER,</Define>
               <Undefine></Undefine>
-              <IncludePath>..\App;..\Bsp;..\Library\CM3;..\Library\STM32_Lib\inc;..\\OS-uCOSII\core;..\\OS-uCOSII\port;..;../Library;../driver;..\Library\wlan</IncludePath>
+              <IncludePath>..\App;..\Bsp;..\Library\CM3;..\Library\STM32_Lib\inc;..\\OS-uCOSII\core;..\\OS-uCOSII\port;..;../Library;../driver;..\Library\wlan;..\driver\cc1101</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -472,86 +472,16 @@
               <FileType>1</FileType>
               <FilePath>..\Bsp\bsp.c</FilePath>
             </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>uCOSII_source</GroupName>
-          <Files>
             <File>
-              <FileName>os_core.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\OS-uCOSII\core\os_core.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_dbg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\OS-uCOSII\core\os_dbg.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_flag.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\OS-uCOSII\core\os_flag.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_mbox.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\OS-uCOSII\core\os_mbox.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_mem.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\OS-uCOSII\core\os_mem.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_mutex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\OS-uCOSII\core\os_mutex.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_q.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\OS-uCOSII\core\os_q.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_sem.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\OS-uCOSII\core\os_sem.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_task.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\OS-uCOSII\core\os_task.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_time.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\OS-uCOSII\core\os_time.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_tmr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\OS-uCOSII\core\os_tmr.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_cpu_c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\OS-uCOSII\port\os_cpu_c.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_cpu_a.asm</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\OS-uCOSII\port\os_cpu_a.asm</FilePath>
+              <FileName>bsp.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Bsp\bsp.h</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>driver</GroupName>
           <Files>
-            <File>
-              <FileName>cc1101.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\driver\cc1101.c</FilePath>
-            </File>
             <File>
               <FileName>spi_flash.c</FileName>
               <FileType>1</FileType>
@@ -563,179 +493,9 @@
               <FilePath>..\driver\LCD\UC1701X.c</FilePath>
             </File>
             <File>
-              <FileName>cc1101.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\driver\cc1101.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>wlan</GroupName>
-          <Files>
-            <File>
-              <FileName>cc3000_common.c</FileName>
+              <FileName>cc1101.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Library\wlan\cc3000_common.c</FilePath>
-            </File>
-            <File>
-              <FileName>cc3000spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\wlan\cc3000spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>evnt_handler.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\wlan\evnt_handler.c</FilePath>
-            </File>
-            <File>
-              <FileName>hci.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\wlan\hci.c</FilePath>
-            </File>
-            <File>
-              <FileName>netapp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\wlan\netapp.c</FilePath>
-            </File>
-            <File>
-              <FileName>nvmem.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\wlan\nvmem.c</FilePath>
-            </File>
-            <File>
-              <FileName>security.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\wlan\security.c</FilePath>
-            </File>
-            <File>
-              <FileName>socket.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\wlan\socket.c</FilePath>
-            </File>
-            <File>
-              <FileName>wlan.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\wlan\wlan.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>std</GroupName>
-          <Files>
-            <File>
-              <FileName>misc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\misc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_adc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_bkp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_bkp.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_can.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_can.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_cec.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_cec.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_crc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_crc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_dac.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_dac.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_dbgmcu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_dbgmcu.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_exti.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_exti.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_flash.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_flash.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_fsmc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_fsmc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_i2c.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_iwdg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_iwdg.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_pwr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_pwr.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_rcc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_rcc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_rtc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_sdio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_sdio.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_usart.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_wwdg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Library\STM32_Lib\src\stm32f10x_wwdg.c</FilePath>
+              <FilePath>..\driver\cc1101\cc1101.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -746,6 +506,26 @@
               <FileName>readme.txt</FileName>
               <FileType>5</FileType>
               <FilePath>..\readme.txt</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>LIB</GroupName>
+          <Files>
+            <File>
+              <FileName>STM32_Lib.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\Library\STM32_Lib\STM32_Lib.lib</FilePath>
+            </File>
+            <File>
+              <FileName>COSII_Lib.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\OS-uCOSII\COSII_Lib.lib</FilePath>
+            </File>
+            <File>
+              <FileName>CC3000_Lib.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\Library\wlan\CC3000_Lib.lib</FilePath>
             </File>
           </Files>
         </Group>

@@ -58,50 +58,7 @@ void DisplayItoA(u8 x_start, u8 y_start, u16 data)
 	displayString(x_start, y_start,DisplayCode);
 	
 }
-//void DisplayItoA(u8 x_start, u8 y_start, u16 data)
-//{
-//  unsigned char SS,S,H,T,A;
-//	unsigned char i = 4;
-//	SS=data/10000;
-//  S=data%10000/1000;
-//  H=data%1000/100;
-//  T=data%100/10;
-//  A=data%10;
-//	
-//	DisplayNum(x_start+20*i,y_start,A);
-//  if(data >=10)
-//  {
-//		DisplayNum(x_start+20*(i-1),y_start,T);
-//  }
-//  else
-//  {
-//		DisplayNum(x_start+20*(i-1),y_start,0);
-//  }
-//  if(data >=100)
-//  {
-//		DisplayNum(x_start+20*(i-2),y_start,H);
-//  }
-//  else
-//  {
-//		DisplayNum(x_start+20*(i-2),y_start,0);
-//  }
-//  if(data >=1000)
-//  {
-//		DisplayNum(x_start+20*(i-3),y_start,S);
-//  }
-//  else
-//  {
-//		DisplayNum(x_start+20*(i-3),y_start,0);
-//  }
-//	if(data >=10000)
-//  {
-//		DisplayNum(x_start+20*(i-4),y_start,SS);
-//  }
-//  else
-//  {
-//		DisplayNum(x_start+20*(i-4),y_start,0);
-//  }
-//}
+
 void Display_WiFi_Status_Code()
 {
 	displayString(0,0,WiFiStatusCode);
