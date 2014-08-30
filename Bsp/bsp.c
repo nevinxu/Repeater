@@ -210,7 +210,7 @@ void TIM2_IRQHandler(void)
     }  
     else if(ulWifiEvent == WIFI_CONNECTING)  //正在连接WIFI
     {
-      if(++wifi_status_led_timeout>=5)
+      if(wifi_status_led_timeout++>=5)
       {
         wifi_status_led_timeout = 0;
         SetLEDToggle(LED3);
@@ -218,7 +218,7 @@ void TIM2_IRQHandler(void)
     }
 		else if(ulWifiEvent == WIFI_SOCKETCONNECTING)  //正在连接TCP/IP
     {
-      if(++wifi_status_led_timeout>=5)
+      if(wifi_status_led_timeout++>=5)
       {
         wifi_status_led_timeout = 0;
         SetLEDToggle(LED2);

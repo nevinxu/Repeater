@@ -176,5 +176,7 @@ extern void CC1101Init(void);
 
 extern void CC1101AddSet(unsigned int  addr);
 
+extern void CC1101SYNCSet(unsigned int  addr);
+
 #endif
 

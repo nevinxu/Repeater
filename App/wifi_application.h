@@ -34,7 +34,7 @@ extern "C"
 
 
 #define SERVER_LAN_PORT         7890            //Ĭ�϶˿ں�
-#define SERVER_LAN_IP        0x6401A8C0     //100
+#define SERVER_LAN_IP        0x6403A8C0     //100
 #define INADDR_ANY						0
 	
 

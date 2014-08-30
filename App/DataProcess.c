@@ -1,7 +1,7 @@
 #include "includes.h"
 
-MSG_HEAD MsgHead[CLIENTNUM];   //ÏûÏ¢Í·
-Terminal_Working_State_MSG_BODY MsgWorkStateBody[CLIENTNUM];  //Êý¾Ý×´Ì¬ ÏûÏ¢Ìå
+MSG_HEAD MsgHead[CLIENTNUM+1];   //ÏûÏ¢Í·
+Terminal_Working_State_MSG_BODY MsgWorkStateBody[CLIENTNUM+1];  //Êý¾Ý×´Ì¬ ÏûÏ¢Ìå
 
 
 unsigned char TxBuffer[64];
@@ -9,34 +9,35 @@ unsigned int MsgBegin = 0xA5B4;   //ÏûÏ¢Ê¶±ð·û
 unsigned int MsgLength;  //ÏûÏ¢³¤¶È  `
 long SequenceId = 0;   //ÏûÏ¢Á÷Ë®ºÅ
 
-unsigned char CommandId[CLIENTNUM]; //ÃüÁî»òÏàÓ¦ÀàÐÍ
-unsigned int ModelAddress[CLIENTNUM];  //´²Î»ºÅ
-unsigned char MsgStatus[CLIENTNUM];  //ÏûÏ¢×´Ì¬
-unsigned char TerminalID[CLIENTNUM][6];//Î¨Ò»±êÊ¶¸ÃÖÕ¶Ë
-unsigned char TerminalStatus[CLIENTNUM] = {0,0,0};  //10¸öÖÕ¶ËµÇÂ½×´Ì¬
+unsigned char CommandId[CLIENTNUM+1]; //ÃüÁî»òÏàÓ¦ÀàÐÍ
+unsigned int ModelAddress[CLIENTNUM+1];  //´²Î»ºÅ
+unsigned char MsgStatus[CLIENTNUM+1];  //ÏûÏ¢×´Ì¬
+unsigned char TerminalID[CLIENTNUM+1][6];//Î¨Ò»±êÊ¶¸ÃÖÕ¶Ë
+unsigned char TerminalStatus[CLIENTNUM+1] = {0,0,0,0,0,0,0};  //10¸öÖÕ¶ËµÇÂ½×´Ì¬
+unsigned char WorEnableFlag[CLIENTNUM+1] = {0,0,0,0,0,0,0};
 
 
 
 unsigned char LastTimeDelay;
 unsigned char PackageLoseNum;
 
-#define MessageHeaderLength  12
+#define MessageHeaderLength  20
 
-unsigned short ProtocolVersion[CLIENTNUM];
-unsigned short HardwareVersion[CLIENTNUM];
+unsigned short ProtocolVersion[CLIENTNUM+1];
+unsigned short HardwareVersion[CLIENTNUM+1];
 
 #define Reversed                0x00
 
-unsigned char CurrentSpeed[CLIENTNUM];
-unsigned int TotalDrip[CLIENTNUM];
-unsigned char TerminalPowerPrecent[CLIENTNUM];
-unsigned char MaxSpeedLimited[CLIENTNUM];
-unsigned char MinSpeedLimited[CLIENTNUM];
+unsigned char CurrentSpeed[CLIENTNUM+1];
+unsigned int TotalDrip[CLIENTNUM+1];
+unsigned char TerminalPowerPrecent[CLIENTNUM+1];
+unsigned char MaxSpeedLimited[CLIENTNUM+1];
+unsigned char MinSpeedLimited[CLIENTNUM+1];
 
-unsigned char WorkingStatus[CLIENTNUM];    //¹¤×÷×´Ì¬
-unsigned char LoginStatus[CLIENTNUM];
-unsigned char LogoutStatus[CLIENTNUM];
-unsigned char HeartBeatStatus[CLIENTNUM];
+unsigned char WorkingStatus[CLIENTNUM+1];    //¹¤×÷×´Ì¬
+unsigned char LoginStatus[CLIENTNUM+1];
+unsigned char LogoutStatus[CLIENTNUM+1];
+unsigned char HeartBeatStatus[CLIENTNUM+1];
 
 
 unsigned char CC1101RxBuf[64];  //cc1101Êý¾Ý½ÓÊÕ»º´æ
@@ -217,6 +218,31 @@ void LoginAckTransmit(unsigned char ClientNum,unsigned char RecTarget)
 	} 
 }
 
+void WorAckTransmit(unsigned char ClientNum,unsigned char RecTarget)
+{
+	MsgHead[ClientNum].m_Status = LoginStatus[ClientNum];
+  MsgHead[ClientNum].m_Total_Length = MessageHeaderLength;
+  MsgHead[ClientNum].m_Command_Id = TerminalWOR_AckCommand ;
+	MsgHead[ClientNum].m_Sequence_Id = SequenceId;
+	SequenceId++;
+  MessageHeader(ClientNum);
+	if(RecTarget == CC1101Target)
+	{
+		CC1101SendPacket( TxBuffer, MsgHead[ClientNum].m_Total_Length); 
+	}
+	else if(RecTarget == CC3000Target)
+	{
+		CC3000SendPacket( TxBuffer, MsgHead[ClientNum].m_Total_Length);
+	} 
+// 	TxBuffer[0] = 0x01;
+// 	TxBuffer[1] = 0x02;
+// 	TxBuffer[2] = 0x03;
+// 	TxBuffer[3] = 0x04;
+// 	TxBuffer[4] = 0x05;
+// 	CC1101SendPacket(TxBuffer,1);
+}
+
+
 void CC1101DateRecProcess(unsigned char ClientNum)
 {
 	if(CC1101RxBuf[CommandIdByte] == TerminalWorkingStateCommand)   //¹¤×÷×´Ì¬½ÓÊÕ°ü
@@ -230,10 +256,12 @@ void CC1101DateRecProcess(unsigned char ClientNum)
 				CurrentSpeed[ClientNum] = CC1101RxBuf[CurrentSpeedByte];
 				TotalDrip[ClientNum] = CC1101RxBuf[TotalDripByte]+ (CC1101RxBuf[TotalDripByte+1]<<8);
 				TerminalPowerPrecent[ClientNum] = CC1101RxBuf[TerminalPowerByte];		
-				MaxSpeedLimited[ClientNum] = 30;
-				MinSpeedLimited[ClientNum] = 140;			
-		//		WorkingStateMsgAckTransmit(ClientNum,CC1101Target);
-				if(TerminalStatus[ClientNum] == 5)
+				//MaxSpeedLimited[ClientNum] = 30; 
+				//MinSpeedLimited[ClientNum] = 140;
+				MaxSpeedLimited[ClientNum] = CC1101RxBuf[MaxSpeedLimitedByte];
+				MinSpeedLimited[ClientNum] = CC1101RxBuf[MinSpeedLimitedByte];
+				WorkingStateMsgAckTransmit(ClientNum,CC1101Target);
+				if(TerminalStatus[ClientNum] == 5)  //ÎªÊ²Ã´å
 				TerminalStatus[ClientNum] = 6;
 			}
 		}
@@ -251,6 +279,13 @@ void CC1101DateRecProcess(unsigned char ClientNum)
 				if(TerminalStatus[ClientNum] == 1)
 				TerminalStatus[ClientNum] = 2;
 			}
+		}
+	}
+	else if(CC1101RxBuf[CommandIdByte] == TerminalWOR_ReqCommand)  //Wor ÇëÇó»ØÓ¦°ü½ÓÊÕ
+	{
+		if (ClientNum == CC1101RxBuf[ModelAddressByte])
+		{
+			WorEnableFlag[CurrentAddress] = 1;
 		}
 	}
 }

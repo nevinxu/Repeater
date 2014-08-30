@@ -57,15 +57,29 @@ const RF_SETTINGS rfSettings =
     0xA7,   // FREQ1     Frequency control word, middle byte.
     0x62,   // FREQ0     Frequency control word, low byte.
 	
-//    0x2d,   // MDMCFG4   Modem configuration.
-//    0x3B,   // MDMCFG3   Modem configuration.
+     0x2d,   // MDMCFG4   Modem configuration.    250k
+     0x3B,   // MDMCFG3   Modem configuration.
 //    0x25,   // MDMCFG4   Modem configuration.1.2k
 //		0x83,   // MDMCFG3   Modem configuration.
-//		0x28,   // MDMCFG4   Modem configuration.  10k
-//		0x93,   // MDMCFG3   Modem configuration.
-		0x2A,   // MDMCFG4   Modem configuration.  50k
-		0xF8,   // MDMCFG3   Modem configuration.
-    0x13,   // MDMCFG2   Modem configuration.
+//     0x28,   // MDMCFG4   Modem configuration.  10k
+//     0x93,   // MDMCFG3   Modem configuration.
+// 		0x2A,   // MDMCFG4   Modem configuration.  50k
+// 		0xF8,   // MDMCFG3   Modem configuration.
+//	  0x2A,   // MDMCFG4   Modem configuration.  30k
+//		0x2E,   // MDMCFG3   Modem configuration.
+	
+//  		0x2B,   // MDMCFG4   Modem configuration.  100k
+//  		0xF8,   // MDMCFG3   Modem configuration.
+// 	
+// 			0x2c,   // MDMCFG4   Modem configuration.  150k
+// 		0x7a,   // MDMCFG3   Modem configuration.
+		
+// 		0x2c,   // MDMCFG4   Modem configuration.  200k
+//		0xF8,   // MDMCFG3   Modem configuration.
+
+		
+		0x13,   // MDMCFG2   Modem configuration.
+//    0x13,   // MDMCFG2   Modem configuration.
     0x22,   // MDMCFG1   Modem configuration.
     0xF8,   // MDMCFG0   Modem configuration.
 
@@ -315,8 +329,12 @@ void CC1101SendPacket(u8 *TxBuffer,u8 Size)
 {
 	GPIO_InitTypeDef   GPIO_InitStructure;
 	u16 i = 0;
+
+	SpiCStrobe(CCxxx0_SIDLE);//??è????D  ?a??ò??¨òa?ó 
 	
-	SpiCStrobe(CCxxx0_SIDLE);//进入空闲  这个一定要加  
+	SPiCWriteReg(CCxxx0_IOCFG2,   0x2e);
+	SPiCWriteReg(CCxxx0_IOCFG0,   0x06); 
+	
   Delay(30000);
 	SpiCStrobe(CCxxx0_SFTX);// Flush the TX FIFO buffer.
 	SPiCWriteReg(CCxxx0_TXFIFO,Size);//写大小
@@ -338,7 +356,11 @@ void CC1101SendPacket(u8 *TxBuffer,u8 Size)
 //		i++;	
 //	}
 	Delay(30000);
-	SpiCStrobe(CCxxx0_SIDLE);//进入空闲
+	SpiCStrobe(CCxxx0_SIDLE);//??è????D
+	
+	SPiCWriteReg(CCxxx0_IOCFG2,   0x06);
+	SPiCWriteReg(CCxxx0_IOCFG0,   0x2e); 
+	Delay(30000);
 	SpiCStrobe(CCxxx0_SFTX);
 	SpiCStrobe(CCxxx0_SFRX);// 清除缓冲区
 	SpiCStrobe(CCxxx0_SRX);//进入接收状态
@@ -360,9 +382,9 @@ u8 CC1101ReceivePacket(u8 *RxBuffer)
 //	u8 Status[2];
 	u8 PacketLength;
 	ClearRecBuf();
-	SpiCStrobe(CCxxx0_SRX);//进入接收状态
-//	Delay(5000);
-	if((SpiCReadStatus(CCxxx0_RXBYTES)&BYTES_IN_RXFIFO))//如果接受的字节数不为0
+	SpiCStrobe(CCxxx0_SRX);//??è??óê?×′ì?
+	Delay(30000);
+	if((SpiCReadStatus(CCxxx0_RXBYTES)&BYTES_IN_RXFIFO))//è?1??óêüμ?×??úêy2??a0
 	{
 		SpiCReadBurstReg(CCxxx0_RXFIFO,RxBuffer,1);//接收数据
 		SpiCReadBurstReg(CCxxx0_RXFIFO,RxBuffer,4);//接收数据
@@ -371,17 +393,18 @@ u8 CC1101ReceivePacket(u8 *RxBuffer)
 			PacketLength = RxBuffer[2] - 4;   //协议规定为16字节长度  不改了
 			SpiCReadBurstReg(CCxxx0_RXFIFO,RxBuffer+4,PacketLength);//接收数据
 		}
-		else
-		{
+	}
+	else
+	{
 			SpiCStrobe(CCxxx0_SFRX);//clear Buffer 清除缓存	
 			SpiCStrobe(CCxxx0_SRX);//进入接收状态
 			return 0;
-		}
-		SpiCStrobe(CCxxx0_SFRX);//clear Buffer 清除缓存
-		SpiCStrobe(CCxxx0_SRX);//进入接收状态
-		Delay(100);
-		return 1;
 	}
+	Delay(30000);
+	SpiCStrobe(CCxxx0_SFRX);//clear Buffer ??3y?o′?
+	SpiCStrobe(CCxxx0_SRX);//??è??óê?×′ì?
+	Delay(100);
+	return 1;
 }
 
 void GDO2EXTI_Config(void)
@@ -491,7 +514,24 @@ void CC1101Init(void)
 
 void CC1101AddSet(unsigned int  addr)
 {
+	static unsigned char addr2;
 	SPiCWriteReg(CCxxx0_CHANNR,addr);
+	addr2 = SpiCReadReg(CCxxx0_CHANNR);
+	Delay(1000);
+	SpiCStrobe(CCxxx0_SIDLE);//进入空闲
+	SpiCStrobe(CCxxx0_SFRX);// 清除缓冲区
+	SpiCStrobe(CCxxx0_SFTX);// 清除缓冲区
+	SpiCStrobe(CCxxx0_SRX);//进入接收状态
+	Delay(1000);
+}
+
+
+void CC1101SYNCSet(unsigned int  addr)
+{
+	static unsigned char addr2;
+	SPiCWriteReg(CCxxx0_SYNC1,0Xd3);
+	SPiCWriteReg(CCxxx0_SYNC0,(addr<<3)+addr);
+	addr2 = SpiCReadReg(CCxxx0_SYNC0);
 	Delay(1000);
 	SpiCStrobe(CCxxx0_SIDLE);//进入空闲
 	SpiCStrobe(CCxxx0_SFRX);// 清除缓冲区

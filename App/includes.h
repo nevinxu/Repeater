@@ -27,6 +27,7 @@
 
 #include "appcc3000.h"
 #include "appuart.h"
+#include "appcc1101.h"
 
 
 #include  "cc1101.h"

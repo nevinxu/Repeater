@@ -14,6 +14,8 @@
 #define TerminalWorkingStateAckCommand  0x08
 #define TerminalWorkingStateReqCommand  0x09
 #define TerminalLogin_ReqCommand  0x0a
+#define TerminalWOR_AckCommand  0x0b
+#define TerminalWOR_ReqCommand  0x0c
 
 #define	MSGBeginByte							0
 #define	TotalLengthByte						2
@@ -38,7 +40,7 @@
 #define CC1101Target							0x01
 #define CC3000Target							0x02
 
-#define CLIENTNUM    10          // 终端个数
+#define CLIENTNUM    6          // 终端个数
 
 
 typedef struct _MSG_HEAD
@@ -87,5 +89,6 @@ extern void LoginTransmit(unsigned char ClientNum,unsigned char RecTarget);
 extern void LoginAckTransmit(unsigned char ClientNum,unsigned char RecTarget);
 extern void LoginReqTransmit(unsigned char ClientNum,unsigned char RecTarget);
 extern void HeartBeatTransmit(unsigned char ClientNum,unsigned char RecTarget);
+extern void WorAckTransmit(unsigned char ClientNum,unsigned char RecTarget);
 extern void CC3000DataRecProcess(unsigned char ClientNum);
 #endif
