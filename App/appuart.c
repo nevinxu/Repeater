@@ -210,7 +210,7 @@ void  taskuart (void  *parg)
 	DMA_Configuration();
 
 	while (1) {
-		UartSend4DMA();
+	//	UartSend4DMA();
 	OSTimeDly(OS_TICKS_PER_SEC); 			     
   }
 }

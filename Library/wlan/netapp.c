@@ -5,7 +5,7 @@
 #include "evnt_handler.h"
 #include "nvmem.h"
 
-#define MIN_TIMER_VAL_SECONDS      20
+#define MIN_TIMER_VAL_SECONDS      5
 #define MIN_TIMER_SET(t)    if ((0 != t) && (t < MIN_TIMER_VAL_SECONDS)) \
                             { \
                                 t = MIN_TIMER_VAL_SECONDS; \

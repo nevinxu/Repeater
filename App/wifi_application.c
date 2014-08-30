@@ -362,7 +362,14 @@ unsigned char Set_TCP(unsigned long IP,unsigned short Port,unsigned char Mode)
   sockaddr tSocketAddr, tSocketRecAddr;
 	socklen_t tSockRecLen;
 	signed long ret;
-  
+	static unsigned char Mac[6] ={0x12,0x34,0x56,0x78,0x9A,0xBC};
+	static unsigned char Version[2]; 
+
+	unsigned long  AucDHCP = 20;
+	unsigned long  AucARP = 20;
+	unsigned long  AucKeepalive = 20;
+	unsigned long  AucInactivity = 5;
+   
   tSocketAddr.sa_family = AF_INET;
   
   // the source port
@@ -374,6 +381,14 @@ unsigned char Set_TCP(unsigned long IP,unsigned short Port,unsigned char Mode)
   tSocketAddr.sa_data[4] = (IP & 0xff0000) >> 16;
   tSocketAddr.sa_data[5] = IP >> 24;
   
+	nvmem_set_mac_address(Mac);
+	nvmem_get_mac_address(Mac);
+
+ nvmem_read_sp_version(Version);
+
+	
+	
+	netapp_timeout_values(&AucDHCP, &AucARP,&AucKeepalive,	&AucInactivity);
   
 	if(Mode == TCPServerMode)	
 	{
@@ -387,6 +402,7 @@ unsigned char Set_TCP(unsigned long IP,unsigned short Port,unsigned char Mode)
 //		}
 		
 	}	
+	
 	else if(Mode == TCPClientMode)
 	{
 		while(connect(ulSocket, &tSocketAddr, sizeof(sockaddr)) == -1)
@@ -676,7 +692,7 @@ int TCPClient()
 	unsigned ret;
 	Set_ulSocket(TCPClientMode);    
 	delay_ms(1000);       //nevinxu    必须要延时这么久!!!!!!
-	ret = Set_TCP(DEVICE_LAN_IP,DEVICE_LAN_PORT,TCPClientMode);
+	ret = Set_TCP(SERVER_LAN_IP,SERVER_LAN_PORT,TCPClientMode);
 	if(!ret)
 	{
 		ulWifiEvent = WIFI_CONNECT_FINISED;
@@ -699,7 +715,7 @@ int TCPServer()
 
 int ConnectUsingSSID(char * ssidName,unsigned char *ssidSecurity)
 {   
-    wlan_ioctl_set_connection_policy(0, 0, 0);
+    wlan_ioctl_set_connection_policy(0, 1, 0);
     wlan_disconnect();
     delay_ms(100); 
     wlan_connect(WLAN_SEC_WPA2, ssidName, strlen(ssidName), 
@@ -846,11 +862,11 @@ void Wifi_event_handler(void)
       {
         ClearEvent(ALL_EVENT_HANDLER);
         ulWifiEvent = WIFI_CONNECTING;
-      } break;
+      }
+			break;	
     case WIFI_CONNECTING:
       {
-        ClearEvent(ALL_EVENT_HANDLER);
-				
+        ClearEvent(ALL_EVENT_HANDLER);	
 				#ifdef UARTDEBUG
 				UartBufferSet("cc3000 connecting...\r\n");
 				#endif
@@ -867,15 +883,15 @@ void Wifi_event_handler(void)
 				#ifdef UARTDEBUG
 				UartBufferSet("wifi tcp connected\r\n");
 				#endif
-				
-        ClearEvent(ALL_EVENT_HANDLER);
-      }break;
+      }
+			break;
     case WIFI_CONNECT_FINISED:
       {
-        SetEvent(RECV_EVENT_HANDLER | SEND_EVENT_HANDLER |LED_EVENT_HANDLER);
+        SetEvent(RECV_EVENT_HANDLER | SEND_EVENT_HANDLER);
         ulWifiEvent = WIFI_SEND_RECV;
-				DisplayStatus = DataDisplayStatus;
-      }break;
+      }
+			break;
+			
     case WIFI_SMARTCONFIG:
       {
         ClearEvent(ALL_EVENT_HANDLER);

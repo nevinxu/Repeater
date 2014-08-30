@@ -18,7 +18,7 @@ extern "C"
 //#define DEFAULT_SSID       "caiyongfeng"
 //#define AP_SECURITY                   "cai88619171"
 
-#define DEFAULT_SSID       							"uoqihroinlkandlk"
+#define DEFAULT_SSID       							"sbsbsbsbs"
 #define AP_SECURITY                   "fangfang0429"	
 	
 	
@@ -27,14 +27,14 @@ extern "C"
 	
 	
 	
-#define DEVICE_LAN_PORT         7890            //默认端口号
-#define DEVICE_LAN_IP        0x0801A8C0
+//#define DEVICE_LAN_PORT         7890            //默认端口号
+//#define DEVICE_LAN_IP        0x0801A8C0
 
 //#define DEVICE_LAN_IP        0x6601A8C0
 
 
 #define SERVER_LAN_PORT         7890            //默认端口号
-#define SERVER_LAN_IP        0x6FA80166     //111
+#define SERVER_LAN_IP        0x6401A8C0     //100
 #define INADDR_ANY						0
 	
 

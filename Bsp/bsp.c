@@ -221,17 +221,9 @@ void TIM2_IRQHandler(void)
       if(++wifi_status_led_timeout>=5)
       {
         wifi_status_led_timeout = 0;
-        SetLEDToggle(LED1);
+        SetLEDToggle(LED2);
       }
     }
-		else if(ulWifiEvent == WIFI_SOCKETCONNECTING)
-		{
-      if(++wifi_status_led_timeout>=2)
-      {
-        wifi_status_led_timeout = 0;
-        SetLEDToggle(LED1);
-      }
-		}
 		
     else if(ulWifiEvent == WIFI_SMARTCONFIG)
     {
@@ -239,9 +231,7 @@ void TIM2_IRQHandler(void)
     }
     else
     {
-      {
-        SetLEDStatus(LED1,FALSE); 
-      }
+;
     } 
   }
 }
