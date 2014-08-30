@@ -8,9 +8,9 @@ OS_STK CC1101TaskStk[100];
 static void taskStart (void  *parg);
 
 #define TASK_START_PRIO     3   //越小优先级越高
-#define TASK_WLAN_PRIO      5
-#define TASK_UART_PRIO      4
-#define TASK_CC1101_PRIO    6
+#define TASK_WLAN_PRIO      7
+#define TASK_UART_PRIO      6
+#define TASK_CC1101_PRIO    4
 
 OS_EVENT *CC1101Rec_Semp;  //cc1101接收不能打断   必须要用信号量
 INT8U err;
@@ -41,10 +41,10 @@ void taskStart (void  *parg)
 {
     (void)parg;
 
-//		OSTaskCreate ( 	taskcc3000,//
-//										(void *)0, 
-//										&WLANTaskStk[99],     //指针地址会出问题的
-//										TASK_WLAN_PRIO);   	
+		OSTaskCreate ( 	taskcc3000,//
+										(void *)0, 
+										&WLANTaskStk[99],     //指针地址会出问题的
+										TASK_WLAN_PRIO);   	
 		OSTaskCreate ( 	taskcc1101,//
 										(void *)0, 
 										&CC1101TaskStk[99], 

@@ -490,21 +490,12 @@ void CC1100_GPIO_Configuration()
 //初始化
 void CC1101Init(void)
 {	
-	unsigned char txBuffer;
 	CC1100_GPIO_Configuration();
 	SPiCPowerUpReset();
 	WriteRfSetting();
 	SpiCWriteBurstReg(CCxxx0_PATABLE,PaTabel,1);//功率配置  10db
 	SPiCWriteReg(CCxxx0_FIFOTHR,0x07);   //RXFIFO  32   TXFIFO  33
 	Delay(1000);	
-	
-//	txBuffer= SpiCReadReg(CCxxx0_IOCFG0);//,   0x06
-//  txBuffer= SpiCReadReg(CCxxx0_IOCFG2);//,   0x06  
-//  txBuffer= SpiCReadReg(CCxxx0_ADDR);  //,   0x00
-
-//	txBuffer= SpiCReadStatus(CCxxx0_RSSI);
-//	txBuffer= SpiCReadStatus(CCxxx0_LQI);
-//	txBuffer= SpiCReadStatus(CCxxx0_PATABLE);
 	
 	SpiCStrobe(CCxxx0_SIDLE);//进入空闲
 	SpiCStrobe(CCxxx0_SFRX);// 清除缓冲区

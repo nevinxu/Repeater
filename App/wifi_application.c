@@ -339,6 +339,7 @@ void Set_ulSocket(unsigned char Mode)
 {
 	unsigned char flag = SOCK_ON;
 	unsigned long timeout = 4;
+//	closesocket(ulSocket);
 	if(Mode == UDPMode)
 	{
 		ulSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP); 
@@ -365,10 +366,10 @@ unsigned char Set_TCP(unsigned long IP,unsigned short Port,unsigned char Mode)
 	static unsigned char Mac[6] ={0x12,0x34,0x56,0x78,0x9A,0xBC};
 	static unsigned char Version[2]; 
 
-	unsigned long  AucDHCP = 20;
-	unsigned long  AucARP = 20;
-	unsigned long  AucKeepalive = 20;
-	unsigned long  AucInactivity = 5;
+	unsigned long  AucDHCP = 14400;
+	unsigned long  AucARP = 3600;
+	unsigned long  AucKeepalive = 10;
+	unsigned long  AucInactivity = 15;
    
   tSocketAddr.sa_family = AF_INET;
   
@@ -715,7 +716,7 @@ int TCPServer()
 
 int ConnectUsingSSID(char * ssidName,unsigned char *ssidSecurity)
 {   
-    wlan_ioctl_set_connection_policy(0, 1, 0);
+    wlan_ioctl_set_connection_policy(0, 0, 0);
     wlan_disconnect();
     delay_ms(100); 
     wlan_connect(WLAN_SEC_WPA2, ssidName, strlen(ssidName), 

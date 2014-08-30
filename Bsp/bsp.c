@@ -205,8 +205,7 @@ void TIM2_IRQHandler(void)
       {
         sendratadata_timeout =0;
       }
-       
-      SetLEDStatus(LED1,TRUE); 
+        
     }  
     else if(ulWifiEvent == WIFI_CONNECTING)  //正在连接WIFI
     {

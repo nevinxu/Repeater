@@ -4,7 +4,7 @@ extern unsigned char  CC1101DataRecFlag;
 extern unsigned char CC1101RxBuf[64];
 extern unsigned char WorEnableFlag[CLIENTNUM];
 extern unsigned char TerminalStatus[CLIENTNUM];  //10个终端登陆状态
-unsigned char CurrentAddress = 0;  //当前地址
+unsigned char CurrentAddress = 1;  //当前地址
 
 /*********************************CC1101任务函数**********************************************/
 void taskcc1101(void *pdata)
@@ -20,6 +20,9 @@ void taskcc1101(void *pdata)
 	
 	while(1)
 	{
+		if(ulWifiEvent == WIFI_SEND_RECV)
+		{
+		
 			CC1101TimeNum++;
 //			OSSemPend(CC1101Rec_Semp,0,&err);//这里必需要用信号量互斥 						
 /*************************************接收函数************************************************/				
@@ -52,6 +55,8 @@ void taskcc1101(void *pdata)
 					}
 					WorReqTimeOut++;
 					WorAckTransmit(CurrentAddress,CC1101Target);
+					//SetLEDStatus(LED1,TRUE);
+					SetLEDStatus(LED1,FALSE);
 			}
 			
 			else if (WorEnableFlag[CurrentAddress] == 1)  //发送正常的数据
@@ -117,6 +122,7 @@ void taskcc1101(void *pdata)
 				WorEnableFlag[CurrentAddress] = 0;
 			}
 		}
+	}
 	//	OSSemPost(CC1101Rec_Semp);
 		OSTimeDly(OS_TICKS_PER_SEC/20);    //定时时间为50ms, 因为时钟节拍是10ms一个
 		//OSTimeDly(20);    

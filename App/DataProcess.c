@@ -261,7 +261,7 @@ void CC1101DateRecProcess(unsigned char ClientNum)
 				MaxSpeedLimited[ClientNum] = CC1101RxBuf[MaxSpeedLimitedByte];
 				MinSpeedLimited[ClientNum] = CC1101RxBuf[MinSpeedLimitedByte];
 				WorkingStateMsgAckTransmit(ClientNum,CC1101Target);
-				if(TerminalStatus[ClientNum] == 5)  //ÎªÊ²Ã´å
+				if(TerminalStatus[ClientNum] == 5)  //å
 				TerminalStatus[ClientNum] = 6;
 			}
 		}
@@ -286,6 +286,7 @@ void CC1101DateRecProcess(unsigned char ClientNum)
 		if (ClientNum == CC1101RxBuf[ModelAddressByte])
 		{
 			WorEnableFlag[CurrentAddress] = 1;
+			// SetLEDToggle(LED1);
 		}
 	}
 }
@@ -310,7 +311,7 @@ void CC3000DataRecProcess(unsigned char ClientNum)
 				if(MsgHead[ClientNum].m_Status == 0)
 				{
 					TerminalStatus[ClientNum] = 4;  
-	//				CurrentAddress++;
+					SetLEDStatus(LED1,TRUE);
 				}
 						reconnectnum = 0;
 			}
@@ -319,7 +320,7 @@ void CC3000DataRecProcess(unsigned char ClientNum)
 				if(MsgHead[ClientNum].m_Status == 0)
 				{
 					TerminalStatus[ClientNum] = 8;  
-//					CurrentAddress++;
+					SetLEDStatus(LED1,TRUE);
 				}
 						reconnectnum = 0;
 			}
